@@ -1,0 +1,68 @@
+{
+  "name": "@a-a-game-studio/aa-front",
+  "version": "0.0.1",
+  "description": "Base front application",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-a-game-studio/aa-core.git"
+  },
+  "keywords": [
+    "front"
+  ],
+  "author": "a-a-game-studio",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/a-a-game-studio/aa-front/issues"
+  },
+  "homepage": "https://github.com/a-a-game-studio/aa-front#readme",
+  "peerDependencies": {},
+  "devDependencies": {
+    "@trongnd/ts-nodemon": "^1.0.3",
+    "@types/expect": "^1.20.4",
+    "@types/lodash": "^4.14.123",
+    "@types/md5": "^2.1.33",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.11.5",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "cross-env": "^5.2.0",
+    "html-loader": "^0.5.5",
+    "typescript": "^3.5.3"
+  },
+  "scripts": {
+    "release": "npm run build:dev && npm run build:prod",
+    "build": "tsc",
+    "test": "ts-mocha",
+    "watch": "./node_modules/.bin/nodemon -e ts -w ./src -x npm run start",
+    "start": "./node_modules/.bin/ts-node-dev ./tests/App/App.test.ts",
+    "run_test": "./node_modules/.bin/ts-node",
+    "migration:create": "./node_modules/.bin/knex migrate:make",
+    "migration:up": "./node_modules/.bin/knex migrate:latest",
+    "migration:down": "./node_modules/.bin/knex migrate:rollback"
+  },
+  "dependencies": {
+    "@a-a-game-studio/aa-classes": "^1.0.11",
+    "@a-a-game-studio/aa-components": "^1.0.14",
+    "chai": "^4.2.0",
+    "lodash": "^4.17.11",
+    "md5": "^2.2.1",
+    "mocha": "^6.2.0",
+    "mysql": "^2.17.1",
+    "nodemon": "^1.19.1",
+    "ts-mocha": "^2.0.0",
+    "ts-node": "^8.0.3",
+    "ts-node-dev": "^1.0.0-pre.43",
+    "typescript-require": "^0.2.10",
+    "uniqid": "^5.0.3",
+    "utf8": "^3.0.0",
+    "uuid": "^3.3.3",
+    "vue": "^2.6.10",
+    "vuex": "^3.1.1"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  }
+}

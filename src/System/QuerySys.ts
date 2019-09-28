@@ -3,6 +3,9 @@
 import { BaseCtrlSys } from "./BaseCtrlSys";
 import axios from 'axios'
 
+
+
+
 interface ResponseI{
     ok:boolean;
     e:boolean;
@@ -16,7 +19,6 @@ interface ResponseI{
 export class QuerySys{
 
     private request:{[key:string]:any}; // Запрос
-    private asUpdate:any[]; // Список того что будем обновлять
 
     private ctrl:BaseCtrlSys;
     private token:string;
@@ -24,15 +26,14 @@ export class QuerySys{
     constructor(ctrl:BaseCtrlSys){
 
         this.request = {}; // Запрос
-        this.asUpdate = []; // Список того что будем обновлять
 
         this.ctrl = ctrl;
     }
 
-    public cbSuccess = function(response){
+    public cbSuccess = function(response:any){
         let self = this;
         let aData = response.data;
-        // console.log(vue_query.data.request);
+
         let vRequest = null;
         let vServData = null;
         let aMutation:{
@@ -45,91 +46,73 @@ export class QuerySys{
 
         
         vRequest = this.request;
-        // vServData = aData[vRequest.cmd][k];
 
-        for(let k in vRequest.cmd){
-            let v = vRequest.cmd[k];
-
-            if(!aData.cmd[v.alias]){ return; } //Если данные не пришли мутацию не запускаем
-            vServData = aData.cmd[v.alias];
+        for(let kKey in vRequest.cmd){
+            let vAlias = vRequest.cmd[kKey];
 
             if(!aMutation.cmd){
                 aMutation.cmd = {};
             }
             
-            aMutation.cmd[v.alias] = vServData;
+            aMutation.cmd[vAlias] = aData[kKey];
 
         };
 
-        for(let k in vRequest.one){
-            let v = vRequest.one[k];
-
-            if(!aData.one[v.alias]){ return; } //Если данные не пришли мутацию не запускаем
-            vServData = aData.one[v.alias];
+        for(let kKey in vRequest.one){
+            let vAlias = vRequest.one[kKey];
 
             if(!aMutation.one){
                 aMutation.one = {};
             }
             
-            aMutation.one[v.alias] = vServData;
-
+            aMutation.one[vAlias] = aData[kKey];
         };
         
-        for(let k in vRequest.list){
-            let v = vRequest.list[k];
-
-            if(!aData.list[v.alias]){ return; } //Если данные не пришли мутацию не запускаем
-            vServData = aData.list[v.alias];
+        for(let kKey in vRequest.list){
+            let vAlias = vRequest.list[kKey];
             
             if(!aMutation.list){
                 aMutation.list = {};
             }
             
-            aMutation.list[v.alias] = vServData;
+            aMutation.list[vAlias] = aData[kKey];
 
         };
 
-        for(let k in vRequest.tree){
-            let v = vRequest.tree[k];
-
-            if(!aData.tree[v.alias]){ return; } //Если данные не пришли мутацию не запускаем
-            vServData = aData.tree[v.alias];
+        for(let kKey in vRequest.list){
+            let vAlias = vRequest.list[kKey];
             
             if(!aMutation.tree){
                 aMutation.tree = {};
             }
             
-            aMutation.tree[v.alias] = vServData;
+            aMutation.tree[vAlias] = aData[kKey];
 
         };
 
-        for(let k in vRequest.status){
-            let v = vRequest.status[k];
+        for(let kKey in vRequest.status){
+            let vAlias = vRequest.status[kKey];
             
             if(!aMutation.status){
                 aMutation.status = {};
             }
 
-            if( this.ctrl.store.state.status[k] != v ){
-                console.log('update state - ',k,v)
-                aMutation.status[k] = v;
+            if( this.ctrl.store.state.status[vAlias] != aData[kKey] ){
+                console.log('update state - ',kKey,vAlias)
+                aMutation.status[vAlias] = aData[kKey];
             }
             
         };
 
-        if( aData.access.ok ){
-            this.ctrl.store.commit('server_response', aMutation);
-        }
-
-        if( aData.access.redirect ){
-            window.location.replace(this.ctrl.conf.redirect.login);
-        }
     }
 
     public cbError = function(errors:any){
         this.ctrl.store.commit('server_error', errors);
     }
 
+    /**
+     * Инициализация запроса
+     */
     public fInit = function(){
 
         this.data.request = {
@@ -151,15 +134,15 @@ export class QuerySys{
         return this;
     }
 
-    public fOne = function(key, alias){
+    public fOne = function(key:string, alias:string){
         this.request.one[key] = alias;
     }
 
-    public fList = function(key, alias){
+    public fList = function(key:string, alias:string){
         this.request.list[key] = alias;
     }
 
-    public fCmd = function(key, alias){
+    public fCmd = function(key:string, alias:string){
         this.data.request.cmd[key] = alias;
     };
 
@@ -170,18 +153,16 @@ export class QuerySys{
             return false;
         }
 
-        // if(!this.status.ok){
-        //     return false;
-        // } else {
-        //     this.status.ok = false;
-        // }
-
-
-        // let data = new FormData();
-        // data.append( "json", JSON.stringify( aSendData ) );
+        const vAxios = axios.create({
+            baseURL: this.ctrl.conf.common.baseURL,
+            timeout: 20000,
+            headers: {
+                'apikey': '9d50ed61df5951973b9e274f043b4ed7'
+            }
+        });
 
         try{
-            let resp:ResponseI = await axios.post(sUrl, data);
+            let resp:ResponseI = await vAxios.post(sUrl, data);
             if(resp.ok){
                 this.cbSuccess(resp.data);
             } else {
@@ -193,7 +174,13 @@ export class QuerySys{
                 'server_no_response':'Сервер недоступен'
             }
             this.cbError(errors);
+
+            // if( aData.access.redirect ){
+            //     window.location.replace(this.ctrl.conf.redirect.login);
+            // }
         };
+
+        
 
     };
 

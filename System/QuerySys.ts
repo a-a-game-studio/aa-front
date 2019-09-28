@@ -1,9 +1,19 @@
 
 
 import { BaseCtrlSys } from "./BaseCtrlSys";
+import axios from 'axios'
 
+interface ResponseI{
+    ok:boolean;
+    e:boolean;
+    data:{[key:string]:any}
+    errors:{[key:string]:string};
+    warning:{[key:string]:string};
+    notice:{[key:string]:string};
+}
+
+/** Система запросов к серверу */
 export class QuerySys{
-
 
     private request:{[key:string]:any}; // Запрос
     private asUpdate:any[]; // Список того что будем обновлять
@@ -29,6 +39,7 @@ export class QuerySys{
             cmd:any;
             one:any;
             list:any;
+            tree:any;
             status:any;
         } = <any>{};
 
@@ -78,6 +89,20 @@ export class QuerySys{
 
         };
 
+        for(let k in vRequest.tree){
+            let v = vRequest.tree[k];
+
+            if(!aData.tree[v.alias]){ return; } //Если данные не пришли мутацию не запускаем
+            vServData = aData.tree[v.alias];
+            
+            if(!aMutation.tree){
+                aMutation.tree = {};
+            }
+            
+            aMutation.tree[v.alias] = vServData;
+
+        };
+
         for(let k in vRequest.status){
             let v = vRequest.status[k];
             
@@ -97,13 +122,12 @@ export class QuerySys{
         }
 
         if( aData.access.redirect ){
-            window.location.replace(this.ctrl.conf);
+            window.location.replace(this.ctrl.conf.redirect.login);
         }
     }
 
-    public cbError = function(xhr, status, error){
-
-        console.log('Ошибка ответа сервера', xhr);
+    public cbError = function(errors:any){
+        this.ctrl.store.commit('server_error', errors);
     }
 
     public fInit = function(){
@@ -139,7 +163,7 @@ export class QuerySys{
         this.data.request.cmd[key] = alias;
     };
 
-    public fSend(sUrl:string, data:{[key:string]:any}){
+    public async fSend(sUrl:string, data:{[key:string]:any}){
 
         if(!sUrl){
             alert('URL - не определен');
@@ -157,16 +181,19 @@ export class QuerySys{
         // data.append( "json", JSON.stringify( aSendData ) );
 
         try{
-            let resp = await axios.post(sUrl, data);
+            let resp:ResponseI = await axios.post(sUrl, data);
             if(resp.ok){
-                this.cbSuccess
+                this.cbSuccess(resp.data);
             } else {
-                
+                this.cbError(resp.errors);
             }
             
         } catch(e){
-            
-        }this.cbError;
+            let errors = {
+                'server_no_response':'Сервер недоступен'
+            }
+            this.cbError(errors);
+        };
 
     };
 

@@ -9,7 +9,9 @@ export interface RootStateI{
     cmd:Store<any>;
     one:Store<any>;
     list:Store<any>;
+    tree:Store<any>;
     status:Store<any>;
+    error:Store<any>;
 }
 
 export class VuexSys{
@@ -108,6 +110,64 @@ export class VuexSys{
         return this;
     }
 
+    /**
+     * Регистрация модуля состояния деревьев
+     * @param state 
+     */
+    public registerModuleTree(state:{[key:string]:any}){
+
+        this.store.registerModule('tree', {
+            state:state,
+            mutations: {
+                server_response(state, response){
+                    if(response.tree){
+                        for(let k in response.tree){
+                            let v = response.tree[k];
+                            state[k] = v;
+                        };
+                    }
+        
+                },
+                clear_tree(state, key){
+                    if(state[key]){
+                        state[key] = null;
+                    }
+                }
+            },
+        });
+
+        return this;
+    }
+
+    /**
+     * Регистрация модуля состояния списка ошибок
+     * @param state 
+     */
+    public registerModuleError(state:{[key:string]:any}){
+
+        this.store.registerModule('error', {
+            state:state,
+            mutations: {
+                server_error(state, errors){
+                    if(errors){
+                        for(let k in errors){
+                            let v = errors[k];
+                            state[k] = v;
+                        };
+                    }
+        
+                },
+                clear_error(state, key){
+                    if(state[key]){
+                        state[key] = null;
+                    }
+                }
+            },
+        });
+
+        return this;
+    }
+
 
     /**
      * Регистрация модуля состояния статуса приложения
@@ -158,7 +218,7 @@ export class VuexSys{
      * Получить объект состояния модели
      */
     public getOneStore(){
-        return this.store.state.list;
+        return this.store.state.one;
     }
 
     /**
@@ -169,16 +229,25 @@ export class VuexSys{
     }
 
     /**
+     * Получить объект состояния деревьев
+     */
+    public getTreeStore(){
+        return this.store.state.tree;
+    }
+
+    /**
      * Получить объект состояния приложения
      */
     public getStatusStore(){
         return this.store.state.status;
     }
 
+    /**
+     * Получить объект состояния серверных ошибок
+     */
+    public getErrorStore(){
+        return this.store.state.error;
+    }
+
 }
 
-const store = new Vuex.Store({
-    mutations: {
-        
-    }
-});

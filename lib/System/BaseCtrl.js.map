@@ -1,0 +1,1 @@
+{"version":3,"file":"BaseCtrl.js","sourceRoot":"","sources":["../../src/System/BaseCtrl.ts"],"names":[],"mappings":";;AAEA,uCAA+C;AAI/C,MAAa,QAAQ;IAajB;QACI,IAAI,CAAC,OAAO,GAAG,IAAI,iBAAO,EAAE,CAAC;QAC7B,IAAI,CAAC,KAAK,GAAG,IAAI,CAAC,OAAO,CAAC,YAAY,EAAE,CAAC;IAC7C,CAAC;CAGJ;AAnBD,4BAmBC"}

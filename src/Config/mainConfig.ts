@@ -6,6 +6,7 @@ export interface ConfI{
     }
 }
 
+
 export const conf:ConfI = {
     common:{
         baseURL:'//:core.ru',

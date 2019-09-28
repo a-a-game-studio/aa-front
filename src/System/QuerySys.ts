@@ -1,6 +1,6 @@
 
 
-import { BaseCtrlSys } from "./BaseCtrlSys";
+import { BaseCtrl } from "./BaseCtrl";
 import axios from 'axios'
 
 
@@ -18,10 +18,10 @@ export class QuerySys{
 
     private request:{[key:string]:any}; // Запрос
 
-    private ctrl:BaseCtrlSys;
+    private ctrl:BaseCtrl;
     private token:string;
 
-    constructor(ctrl:BaseCtrlSys){
+    constructor(ctrl:BaseCtrl){
 
         this.request = {}; // Запрос
 

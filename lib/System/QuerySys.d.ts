@@ -1,10 +1,10 @@
-import { BaseCtrlSys } from "./BaseCtrlSys";
+import { BaseCtrl } from "./BaseCtrl";
 /** Система запросов к серверу */
 export declare class QuerySys {
     private request;
     private ctrl;
     private token;
-    constructor(ctrl: BaseCtrlSys);
+    constructor(ctrl: BaseCtrl);
     cbSuccess: (response: any) => void;
     cbError: (errors: any) => void;
     /**

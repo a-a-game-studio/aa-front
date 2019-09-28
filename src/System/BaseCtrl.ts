@@ -4,7 +4,7 @@ import { VuexSys, RootStateI } from './VuexSys'
 import { QuerySys } from './QuerySys';
 import { ConfI } from '../Config/mainConfigI'
 
-export class BaseCtrlSys{
+export class BaseCtrl{
     protected vuexSys:VuexSys;
     public store:Store<RootStateI>;
     public cmd:Store<any>;

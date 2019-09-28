@@ -4,8 +4,6 @@ import { BaseCtrlSys } from "./BaseCtrlSys";
 import axios from 'axios'
 
 
-
-
 interface ResponseI{
     ok:boolean;
     e:boolean;

@@ -2,6 +2,7 @@
 import { Store }  from 'vuex';
 import { VuexSys, RootStateI } from './VuexSys'
 import { QuerySys } from './QuerySys';
+import { ConfI } from '../Config/mainConfigI'
 
 export class BaseCtrlSys{
     protected vuexSys:VuexSys;
@@ -12,7 +13,7 @@ export class BaseCtrlSys{
     public tree:Store<any>;
     public error:Store<any>;
 
-    public conf:any;
+    public conf:ConfI;
     public querySys:QuerySys;
 
 

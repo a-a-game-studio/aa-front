@@ -6,7 +6,7 @@
   "types": "lib/src/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/a-a-game-studio/aa-core.git"
+    "url": "git+https://github.com/a-a-game-studio/aa-front.git"
   },
   "keywords": [
     "front"

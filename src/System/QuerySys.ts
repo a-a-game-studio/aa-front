@@ -132,16 +132,32 @@ export class QuerySys{
         return this;
     }
 
+    /**
+     * Получить модель данных
+     */
     public fOne = function(key:string, alias:string){
         this.request.one[key] = alias;
     }
 
+    /**
+     * Получить список моделей данных
+     */
     public fList = function(key:string, alias:string){
         this.request.list[key] = alias;
     }
 
+    /**
+     * Получить команду
+     */
     public fCmd = function(key:string, alias:string){
         this.data.request.cmd[key] = alias;
+    };
+
+    /**
+     * Получить статус
+     */
+    public fStatus = function(key:string, alias:string){
+        this.data.request.status[key] = alias;
     };
 
     public async fSend(sUrl:string, data:{[key:string]:any}){

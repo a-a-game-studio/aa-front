@@ -4,12 +4,12 @@ import { QuerySys } from './QuerySys';
 import { ConfI } from '../Config/mainConfigI';
 export declare class BaseCtrl {
     store: Store<RootStateI>;
-    cmd: Store<any>;
-    one: Store<any>;
-    list: Store<any>;
-    status: Store<any>;
-    tree: Store<any>;
-    error: Store<any>;
+    cmd: any;
+    one: any;
+    list: any;
+    status: any;
+    tree: any;
+    error: any;
     querySys: QuerySys;
     conf: ConfI;
     constructor(store: Store<RootStateI>, conf: ConfI);

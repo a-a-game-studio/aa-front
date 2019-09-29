@@ -6,12 +6,12 @@ import { ConfI } from '../Config/mainConfigI'
 
 export class BaseCtrl{
     public store:Store<RootStateI>;
-    public cmd:Store<any>;
-    public one:Store<any>;
-    public list:Store<any>;
-    public status:Store<any>;
-    public tree:Store<any>;
-    public error:Store<any>;
+    public cmd:any;
+    public one:any;
+    public list:any;
+    public status:any;
+    public tree:any;
+    public error:any;
     public querySys:QuerySys;
     public conf:ConfI;
 

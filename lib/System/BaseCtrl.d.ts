@@ -1,16 +1,16 @@
 import { Store } from 'vuex';
-import { VuexSys, RootStateI } from './VuexSys';
+import { RootStateI } from './VuexSys';
 import { QuerySys } from './QuerySys';
 import { ConfI } from '../Config/mainConfigI';
 export declare class BaseCtrl {
-    protected vuexSys: VuexSys;
     store: Store<RootStateI>;
     cmd: Store<any>;
     one: Store<any>;
     list: Store<any>;
+    status: Store<any>;
     tree: Store<any>;
     error: Store<any>;
-    conf: ConfI;
     querySys: QuerySys;
-    constructor();
+    conf: ConfI;
+    constructor(store: Store<RootStateI>, conf: ConfI);
 }

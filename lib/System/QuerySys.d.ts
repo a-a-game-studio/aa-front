@@ -29,5 +29,5 @@ export declare class QuerySys {
     fStatus: (key: string, alias: string) => void;
     fSend(sUrl: string, data: {
         [key: string]: any;
-    }): Promise<boolean>;
+    }): false | Promise<void>;
 }

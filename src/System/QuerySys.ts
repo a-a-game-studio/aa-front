@@ -113,14 +113,13 @@ export class QuerySys{
      */
     public fInit = function(){
 
-        this.data.request = {
+        this.request = {
             cmd:{},
             one:{},
             list:{},
             status:{},
         };
 
-        this.data.ok = true;
 
         if(localStorage['token']){
             this.token = localStorage['token'];
@@ -150,14 +149,14 @@ export class QuerySys{
      * Получить команду
      */
     public fCmd = function(key:string, alias:string){
-        this.data.request.cmd[key] = alias;
+        this.request.cmd[key] = alias;
     };
 
     /**
      * Получить статус
      */
     public fStatus = function(key:string, alias:string){
-        this.data.request.status[key] = alias;
+        this.request.status[key] = alias;
     };
 
     public fSend(sUrl:string, data:{[key:string]:any}){

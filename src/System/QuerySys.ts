@@ -136,6 +136,7 @@ export class QuerySys{
      */
     public fOne = function(key:string, alias:string){
         this.request.one[key] = alias;
+        console.log('fOne');
     }
 
     /**

@@ -161,6 +161,8 @@ export class QuerySys{
 
     public fSend(sUrl:string, data:{[key:string]:any}){
 
+        console.log('==>Send data:',sUrl, data);
+
         if(!sUrl){
             alert('URL - не определен');
             return false;

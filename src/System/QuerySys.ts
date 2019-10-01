@@ -174,6 +174,8 @@ export class QuerySys{
             }
         });
 
+        console.log('==>Send data:',data);
+
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
             let resp:ResponseI = respAxios.data;
             if(resp.ok){

@@ -30,4 +30,7 @@ export declare class QuerySys {
     fSend(sUrl: string, data: {
         [key: string]: any;
     }): false | Promise<void>;
+    faSend(sUrl: string, data: {
+        [key: string]: any;
+    }): Promise<boolean>;
 }

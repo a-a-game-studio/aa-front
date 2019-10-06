@@ -1,7 +1,2 @@
-export interface ConfI {
-    common: {
-        baseURL: string;
-        loginURL: string;
-    };
-}
+import { ConfI } from './mainConfigI';
 export declare const conf: ConfI;

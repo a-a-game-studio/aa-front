@@ -136,7 +136,6 @@ export class QuerySys{
      */
     public fOne = function(key:string, alias:string){
         this.request.one[key] = alias;
-        console.log('fOne');
     }
 
     /**
@@ -161,8 +160,6 @@ export class QuerySys{
     };
 
     public fSend(sUrl:string, data:{[key:string]:any}){
-
-        console.log('==>Send data:',sUrl, data);
 
         if(!sUrl){
             alert('URL - не определен');
@@ -198,6 +195,49 @@ export class QuerySys{
         });
 
         return promiseAxios;
+    };
+
+    public async faSend(sUrl:string, data:{[key:string]:any}){
+
+        if(!sUrl){
+            alert('URL - не определен');
+            return false;
+        }
+
+        const vAxios = axios.create({
+            baseURL: this.ctrl.conf.common.baseURL,
+            timeout: 20000,
+            headers: {
+                'apikey': this.token
+            }
+        });
+
+        console.log('==>Send data:',data);
+
+        try{
+            let respAxios = await vAxios.post(sUrl, data);
+            
+            let resp:ResponseI = respAxios.data;
+            if(resp.ok){
+                this.cbSuccess(resp.data);
+            } else {
+                this.cbError(resp.errors);
+            }
+
+        } catch(e){
+
+            console.log()
+        
+            let errors = {
+                'server_no_response':'Сервер недоступен'
+            }
+            this.cbError(errors);
+
+            // if( aData.access.redirect ){
+            //     window.location.replace(this.ctrl.conf.redirect.login);
+            // }
+        }
+
     };
 
 

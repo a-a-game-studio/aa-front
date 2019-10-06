@@ -1,10 +1,5 @@
 
-export interface ConfI{
-    common:{
-        baseURL:string; // Базовый URL
-        loginURL:string; // Редирект на логин 
-    }
-}
+import { ConfI } from './mainConfigI'
 
 export const conf:ConfI = {
     common:{

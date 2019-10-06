@@ -102,6 +102,11 @@ export class QuerySys{
             
         };
 
+        // Если прислан токен нужно его обновить в localstorage
+        if(aData['token']){
+            this.token = localStorage['token'] = aData['token'];
+        }
+
     }
 
     public cbError = function(errors:any){
@@ -208,7 +213,7 @@ export class QuerySys{
             baseURL: this.ctrl.conf.common.baseURL,
             timeout: 20000,
             headers: {
-                'apikey': this.token
+                'token': this.token
             }
         });
 

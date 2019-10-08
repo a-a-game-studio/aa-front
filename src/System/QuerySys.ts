@@ -28,11 +28,10 @@ export class QuerySys{
         this.ctrl = ctrl;
     }
 
-    public cbSuccess = function(response:any){
+    public cbSuccess = function(aData:any){
         let self = this;
-        let aData = response.data;
 
-        console.log('===>Success.aData',response);
+        console.log('===>Success.aData',aData);
 
         let vRequest = null;
         let vServData = null;

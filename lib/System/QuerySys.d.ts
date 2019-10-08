@@ -5,7 +5,7 @@ export declare class QuerySys {
     private ctrl;
     private token;
     constructor(ctrl: BaseCtrl);
-    cbSuccess: (response: any) => void;
+    cbSuccess: (aData: any) => void;
     cbError: (errors: any) => void;
     /**
      * Инициализация запроса

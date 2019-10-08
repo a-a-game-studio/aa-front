@@ -172,7 +172,7 @@ export class QuerySys{
         }
 
         const vAxios = axios.create({
-            baseURL: this.ctrl.conf.common.baseURL,
+            baseURL: this.ctrl.conf.common.apiURL,
             timeout: 20000,
             headers: {
                 'apikey': this.token

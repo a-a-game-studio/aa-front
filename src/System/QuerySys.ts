@@ -32,7 +32,7 @@ export class QuerySys{
         let self = this;
         let aData = response.data;
 
-        console.log('===>Success.aData',aData);
+        console.log('===>Success.aData',response);
 
         let vRequest = null;
         let vServData = null;
@@ -114,6 +114,7 @@ export class QuerySys{
     }
 
     public cbError = function(errors:any){
+        console.log('==>cbError:',errors);
         this.ctrl.store.commit('server_error', errors);
     }
 

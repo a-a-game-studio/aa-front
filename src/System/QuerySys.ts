@@ -175,10 +175,11 @@ export class QuerySys{
             baseURL: this.ctrl.conf.common.apiURL,
             timeout: 20000,
             headers: {
-                'apikey': this.token
+                'token': this.token
             }
         });
 
+        console.log('==>URL:',this.ctrl.conf.common.apiURL, sUrl);
         console.log('==>Send data:',data);
 
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
@@ -217,6 +218,7 @@ export class QuerySys{
             }
         });
 
+        console.log('==>URL:',this.ctrl.conf.common.apiURL, sUrl);
         console.log('==>Send data:',data);
 
         try{

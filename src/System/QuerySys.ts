@@ -132,6 +132,8 @@ export class QuerySys{
             this.token = null;
         }
 
+        console.log('===>token:',this.token);
+
 
         return this;
     }
@@ -171,6 +173,8 @@ export class QuerySys{
             return false;
         }
 
+        console.log('===>token:',this.token);
+        
         const vAxios = axios.create({
             baseURL: this.ctrl.conf.common.apiURL,
             timeout: 20000,
@@ -209,6 +213,8 @@ export class QuerySys{
             alert('URL - не определен');
             return false;
         }
+
+        console.log('===>token:',this.token);
 
         const vAxios = axios.create({
             baseURL: this.ctrl.conf.common.apiURL,

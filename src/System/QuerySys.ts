@@ -191,7 +191,11 @@ export class QuerySys{
         console.log('==>Send data:',data);
 
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
+
+            console.log('===>respAxios:',respAxios);
+
             let resp:ResponseI = respAxios.data;
+            
             if(resp.ok){
                 this.cbSuccess(resp.data);
             } else {
@@ -233,6 +237,8 @@ export class QuerySys{
 
         try{
             let respAxios = await vAxios.post(sUrl, data);
+
+            console.log('===>respAxios:',respAxios);
             
             let resp:ResponseI = respAxios.data;
             if(resp.ok){

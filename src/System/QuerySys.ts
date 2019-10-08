@@ -32,6 +32,8 @@ export class QuerySys{
         let self = this;
         let aData = response.data;
 
+        console.log('===>Success.aData',aData);
+
         let vRequest = null;
         let vServData = null;
         let aMutation:{
@@ -107,6 +109,8 @@ export class QuerySys{
             this.token = localStorage['token'] = aData['token'];
         }
 
+        console.log('===>aMutation:',aMutation);
+
     }
 
     public cbError = function(errors:any){
@@ -126,8 +130,8 @@ export class QuerySys{
         };
 
 
-        if(window.localStorage['token']){
-            this.token = window.localStorage['token'];
+        if(localStorage['token']){
+            this.token = localStorage['token'];
         } else {
             this.token = null;
         }

@@ -126,8 +126,8 @@ export class QuerySys{
         };
 
 
-        if(localStorage['token']){
-            this.token = localStorage['token'];
+        if(window.localStorage['token']){
+            this.token = window.localStorage['token'];
         } else {
             this.token = null;
         }

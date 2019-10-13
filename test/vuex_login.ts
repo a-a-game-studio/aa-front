@@ -17,4 +17,5 @@ vuexSys.registerModuleList({
 
 vuexSys.registerModuleStatus({
     user_id:0,
+    token:null,
 });

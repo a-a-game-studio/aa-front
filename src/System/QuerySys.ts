@@ -2,6 +2,7 @@
 
 import { BaseCtrl } from "./BaseCtrl";
 import axios from 'axios'
+import * as VuexSys from "./VuexSys"
 
 interface ResponseI{
     ok:boolean;
@@ -27,20 +28,14 @@ export class QuerySys{
         this.ctrl = ctrl;
     }
 
-    public cbSuccess = function(aData:any){
+    public cbSuccess(aData:any){
         let self = this;
 
         console.log('===>Success.aData',aData);
 
         let vRequest = null;
         let vServData = null;
-        let aMutation:{
-            cmd:any;
-            one:any;
-            list:any;
-            tree:any;
-            status:any;
-        } = <any>{};
+        let aMutation:VuexSys.ServerResponseI = <any>{};
 
         
         vRequest = this.request;
@@ -95,7 +90,7 @@ export class QuerySys{
                 aMutation.status = {};
             }
 
-            if( this.ctrl.store.state.status[vAlias] != aData[kKey] ){
+            if( this.ctrl.status[vAlias] != aData[kKey] ){
                 console.log('update state - ',kKey,vAlias)
                 aMutation.status[vAlias] = aData[kKey];
             }
@@ -109,8 +104,7 @@ export class QuerySys{
 
         console.log('===>aMutation:',aMutation);
 
-        this.ctrl.store.commit('server_response', aMutation);
-
+        this.ctrl.vuexSys.fServerResponse(aMutation);
     }
 
     public cbError = function(errors:any){

@@ -20,6 +20,12 @@ export default class frm_login extends Vue {
         ctrl.fLogin(login_data);
         console.log(login_data);
     }
+
+    /** Выход пользователя */
+    fLogout(){
+        ctrl.fLogout();
+        console.log('logout');
+    }
     
     /** Ввод логина */
     fInputLogin(e:any){

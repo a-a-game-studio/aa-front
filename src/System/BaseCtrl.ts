@@ -5,6 +5,7 @@ import { QuerySys } from './QuerySys';
 import { ConfI } from '../Config/mainConfigI'
 
 export class BaseCtrl{
+    // Store
     public store:Store<RootStateI>;
     public cmd:any;
     public one:any;
@@ -12,11 +13,14 @@ export class BaseCtrl{
     public status:any;
     public tree:any;
     public error:any;
+
     public querySys:QuerySys;
+    public vuexSys:VuexSys;
     public conf:ConfI;
 
-    public constructor(store:Store<RootStateI>, conf:ConfI){
-        this.store = store;
+    public constructor(vuexSys:VuexSys, conf:ConfI){
+        this.vuexSys = vuexSys;
+        this.store = vuexSys.getRootStore();
         this.conf = conf;
 
         if(this.store.state.cmd){
@@ -57,8 +61,6 @@ export class BaseCtrl{
 
         // Определяем построитель запросов
         this.querySys = new QuerySys(this);
+        
     }
-
-    
-
 }

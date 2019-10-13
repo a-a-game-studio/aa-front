@@ -1,9 +1,9 @@
 import * as aaFront from '../src'
 import { pageConf as conf } from './conf_login'
-import { store } from './vuex_login'
+import { store, vuexSys } from './vuex_login'
 
 class Ctrl extends aaFront.BaseCtrl{
-    constructor(store:any){
+    constructor(store:aaFront.VuexSys){
         super(store, conf);
     }
 
@@ -23,7 +23,7 @@ class Ctrl extends aaFront.BaseCtrl{
         this.querySys.fInit();
         this.querySys.fCmd('cmd_login', 'login');
         this.querySys.fOne('one_user', 'user');
-        this.querySys.fStatus('user_id', 'user_id');
+        this.querySys.fStatus('token', 'token');
 
         this.querySys.fSend(conf.api.login, data);
     };
@@ -35,13 +35,14 @@ class Ctrl extends aaFront.BaseCtrl{
         this.querySys.fCmd('cmd_logout', 'logout');
         this.querySys.fSend(conf.api.logout, null);
 
-        store.commit('clear_state', 'user_id');
-        store.commit('clear_one', 'login');
-        store.commit('clear_one', 'user');
+
+        this.vuexSys.fClearStatus('token');
+        this.vuexSys.fClearStatus('user_id');
+        this.vuexSys.fClearOne('user');
 
         localStorage['token'] = null;
     };
     
 }
 
-export const ctrl = new Ctrl(store);
+export const ctrl = new Ctrl(vuexSys);

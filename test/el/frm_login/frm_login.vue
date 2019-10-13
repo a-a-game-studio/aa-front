@@ -3,7 +3,7 @@
 <template>
 
 <div class="container">
-    <div class="card">
+    <div v-if="!status.user_id && !status.token" class="card">
         <div class="card-header">
             Вход пользователя:
         </div>
@@ -25,6 +25,19 @@
         </div>
         <div class="card-footer">
             <button @click="fLogin()" type="button" class="btn btn-primary">Вход</button>
+        </div>
+    </div>
+    <div v-else>
+        <div class="card-header">
+            Добро пожаловать:
+        </div>
+        <div class="card-body">
+            <div>ID: {{one.user.user_id}}</div>
+            <div>Логин: {{one.user.login}}</div>
+            <div>Имя: {{one.user.name}}</div>
+        </div>
+        <div class="card-footer">
+            <button @click="fLogout()" type="button" class="btn btn-primary">Выход</button>
         </div>
     </div>
 </div>

@@ -3,9 +3,7 @@ import Vuex, { Store, Module }  from 'vuex';
 
 import Vue from 'vue';
 
-if(Vue){
-    Vue.use(Vuex);
-}
+Vue.use(Vuex);
 
 export interface RootStateI{
     cmd:Store<any>;
@@ -15,6 +13,16 @@ export interface RootStateI{
     status:Store<any>;
     error:Store<any>;
 }
+
+export interface ServerResponseI{
+    cmd:{[key:string]:any};
+    one:{[key:string]:any};
+    list:{[key:string]:any[]};
+    tree:{[key:string]:any};
+    status:{[key:string]:string|boolean|number};
+    error:{[key:string]:string};
+}
+
 
 export class VuexSys{
     private store: Store<RootStateI>;
@@ -26,6 +34,116 @@ export class VuexSys{
             }
         });
     }
+
+    // ============================================
+
+    /**
+     * module: all
+     * Мутация ответа сервера
+     * @param response 
+     */
+    public fServerResponse(response:ServerResponseI){
+        this.store.commit('server_response', response);
+    }
+
+    // =========================================
+
+    /**
+     * module: one
+     * Мутация - изменить модель данных
+     * @param key - ключ модуля
+     * @param name - поле модели
+     * @param value - значение
+     */
+    public fSetOne(key:string, value:any){
+        this.store.commit('set_one', {key, value});
+    }
+
+    /**
+     * module: one
+     * Мутация - изменить поле модели данных
+     * @param key - ключ модуля
+     * @param name - поле модели
+     * @param value - значение
+     */
+    public fSetOneField(key:string, name:string, value:any){
+        this.store.commit('set_one_field', {key, name, value});
+    }
+
+    /**
+     * module: one
+     * Мутация - очищает по ключу модель данных
+     * @param key 
+     */
+    public fClearOne(key:string){
+        this.store.commit('clear_one', key);
+    }
+
+    // =========================================
+
+    /**
+     * module: list
+     * Мутация - изменить список моделей данных
+     * @param key - ключ модуля
+     * @param name - поле модели
+     * @param value - значение
+     */
+    public fSetList(key:string, value:any){
+        this.store.commit('set_list', {key, value});
+    }
+
+    /**
+     * module: list
+     * Мутация - очищает по ключу список моделей данных
+     * @param key 
+     */
+    public fClearList(key:string){
+        this.store.commit('clear_list', key);
+    }
+
+    // =========================================
+
+    /**
+     * module: status
+     * Мутация - изменить состояние страницы
+     * @param key - ключ модуля
+     * @param value - значение
+     */
+    public fSetStatus(key:string, value:boolean|number|string){
+        this.store.commit('set_one_field', {key, value});
+    }
+
+    /**
+     * module: status
+     * Мутация - очищает по ключу status
+     * @param key 
+     */
+    public fClearStatus(key:string){
+        this.store.commit('clear_status', key);
+    }
+
+    // =========================================
+
+    /**
+     * module: tree
+     * Мутация - очищает по ключу дерево объектов
+     * @param key 
+     */
+    public fClearTree(key:string){
+        this.store.commit('clear_tree', key);
+    }
+
+    /**
+     * module: error
+     * Мутация - очищает по ключу ошибку
+     * @param key 
+     */
+    public fClearError(key:string){
+        this.store.commit('clear_error', key);
+    }
+    
+
+    // ============================================
 
     /**
      * Регистрация модуля состояния команд
@@ -73,6 +191,11 @@ export class VuexSys{
                         state[field.key][field.name] = field.value;
                     }
                 },
+                set_one(state, one){
+                    if(state[one.key]){
+                        state[one.key] = one.value;
+                    }
+                },
                 clear_one(state, key){
                     if(state[key]){
                         state[key] = null;
@@ -102,6 +225,11 @@ export class VuexSys{
                         };
                     }
         
+                },
+                set_list(state, list){
+                    if(state[list.key]){
+                        state[list.key] = list.value;
+                    }
                 },
                 clear_list(state, key){
                     if(state[key]){
@@ -193,10 +321,10 @@ export class VuexSys{
                         };
                     }
                 },
-                set_state(state, field){
+                set_status(state, field){
                     state[field.key] = field.value;
                 },
-                clear_state(state, key){
+                clear_status(state, key){
                     if(state[key]){
                         state[key] = 0;
                     }
@@ -257,4 +385,3 @@ export class VuexSys{
     }
 
 }
-

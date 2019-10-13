@@ -3,7 +3,9 @@ import Vuex, { Store, Module }  from 'vuex';
 
 import Vue from 'vue';
 
-Vue.use(Vuex);
+if(Vue){
+    Vue.use(Vuex);
+}
 
 export interface RootStateI{
     cmd:Store<any>;

@@ -3,6 +3,12 @@
 import { BaseCtrl } from "./BaseCtrl";
 import axios from 'axios'
 
+import * as mockTestEnv from './MockTestEnv'
+
+if(!localStorage){ // Если запускается из консоли
+    localStorage = mockTestEnv.localStorage;
+}
+
 
 interface ResponseI{
     ok:boolean;

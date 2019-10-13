@@ -60,6 +60,7 @@ export class VuexSys{
             state:state,
             mutations: {
                 server_response(state, response){
+                    console.log('server_response:one', response);
                     if(response.one){
                         for(let k in response.one){
                             let v = response.one[k];
@@ -93,6 +94,7 @@ export class VuexSys{
             state:state,
             mutations: {
                 server_response(state, response){
+                    console.log('server_response:list', response);
                     if(response.list){
                         for(let k in response.list){
                             let v = response.list[k];
@@ -122,6 +124,7 @@ export class VuexSys{
             state:state,
             mutations: {
                 server_response(state, response){
+                    console.log('server_response:tree', response);
                     if(response.tree){
                         for(let k in response.tree){
                             let v = response.tree[k];
@@ -151,6 +154,7 @@ export class VuexSys{
             state:state,
             mutations: {
                 server_error(state, errors){
+                    console.log('server_response:error', errors);
                     if(errors){
                         for(let k in errors){
                             let v = errors[k];
@@ -181,7 +185,8 @@ export class VuexSys{
             state:state,
             mutations: {
                 server_response(state, response){
-                    if(response.state){
+                    console.log('server_response:status', response);
+                    if(response.status){
                         for(let k in response.status){
                             let v = response.status[k];
                             state[k] = v;

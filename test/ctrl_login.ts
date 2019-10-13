@@ -1,6 +1,6 @@
-import * as aaFront from '../../src'
-import {localStorage, store } from '../../src/System/MockTestEnv'
+import * as aaFront from '../src'
 import { pageConf as conf } from './conf_login'
+import { store } from './vuex_login'
 
 class Ctrl extends aaFront.BaseCtrl{
     constructor(store:any){
@@ -9,7 +9,7 @@ class Ctrl extends aaFront.BaseCtrl{
 
     public fInit(){
         this.querySys.fInit();
-        this.querySys.fOne('one_user', 'user');
+        this.querySys.fOne('one_user_info', 'user');
         this.querySys.fStatus('user_id', 'user_id');
         this.querySys.fSend(conf.api.index, null);
     };

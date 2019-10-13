@@ -1,7 +1,6 @@
 
-import { localStorage, store } from '../../src/System/MockTestEnv'
-import { conf } from '../../src/Config/mainConfig'
-import { ConfI } from '../../src/Config/mainConfigI'
+import { conf } from '../src/Config/mainConfig'
+import { ConfI } from '../src/Config/mainConfigI'
 
 
 // Переопределяем интерфейс конфигурации

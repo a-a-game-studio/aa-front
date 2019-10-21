@@ -110,7 +110,7 @@ export class VuexSys{
      * @param value - значение
      */
     public fSetStatus(key:string, value:boolean|number|string){
-        this.store.commit('set_one_field', {key, value});
+        this.store.commit('set_status', {key, value});
     }
 
     /**

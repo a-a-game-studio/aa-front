@@ -20,6 +20,7 @@ export class QuerySys{
 
     private ctrl:BaseCtrl;
     private token:string;
+    private cbAction:Function = null; // Функция обратного вызова выполняющиеся после запроса на сервер
 
     constructor(ctrl:BaseCtrl){
 
@@ -105,11 +106,32 @@ export class QuerySys{
         console.log('===>aMutation:',aMutation);
 
         this.ctrl.vuexSys.fServerResponse(aMutation);
+
+        // Если функция обратного вызова указана
+        if(this.cbAction){
+            this.cbAction(true, aData);
+        }
     }
 
+    /**
+     * Ответ с ошибкой
+     */
     public cbError = function(errors:any){
         console.log('==>cbError:',errors);
         this.ctrl.store.commit('server_error', errors);
+
+        // Если функция обратного вызова указана
+        if(this.cbAction){
+            this.cbAction(false, errors);
+        }
+    }
+
+    /**
+     * Функция обратного вызова после выполнения запроса
+     * function(ok:boolean, data:any)
+     */
+    public fAction(cbAction:Function){
+        this.cbAction = cbAction;
     }
 
     /**
@@ -123,6 +145,8 @@ export class QuerySys{
             list:{},
             status:{},
         };
+
+        this.cbAction = null; // Сбрасывае функцию обратного вызова
 
 
         if(localStorage['token']){

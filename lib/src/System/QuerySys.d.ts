@@ -4,9 +4,18 @@ export declare class QuerySys {
     private request;
     private ctrl;
     private token;
+    private cbAction;
     constructor(ctrl: BaseCtrl);
     cbSuccess(aData: any): void;
+    /**
+     * Ответ с ошибкой
+     */
     cbError: (errors: any) => void;
+    /**
+     * Функция обратного вызова после выполнения запроса
+     * function(ok:boolean, data:any)
+     */
+    fAction(cbAction: Function): void;
     /**
      * Инициализация запроса
      */

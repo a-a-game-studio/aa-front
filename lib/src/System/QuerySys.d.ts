@@ -6,11 +6,11 @@ export declare class QuerySys {
     private token;
     private cbAction;
     constructor(ctrl: BaseCtrl);
-    cbSuccess(aData: any): void;
+    cbSuccess(aData: any): Promise<void>;
     /**
      * Ответ с ошибкой
      */
-    cbError: (errors: any) => void;
+    cbError: (errors: any) => Promise<void>;
     /**
      * Функция обратного вызова после выполнения запроса
      * function(ok:boolean, data:any)

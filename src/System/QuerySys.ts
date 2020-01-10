@@ -29,7 +29,7 @@ export class QuerySys{
         this.ctrl = ctrl;
     }
 
-    public cbSuccess(aData:any){
+    public async cbSuccess(aData:any){
         let self = this;
 
         console.log('===>Success.aData',aData);
@@ -116,7 +116,7 @@ export class QuerySys{
     /**
      * Ответ с ошибкой
      */
-    public cbError = function(errors:any){
+    public cbError = async function(errors:any){
         console.log('==>cbError:',errors);
         this.ctrl.store.commit('server_error', errors);
 
@@ -261,9 +261,9 @@ export class QuerySys{
             
             let resp:ResponseI = respAxios.data;
             if(resp.ok){
-                this.cbSuccess(resp.data);
+                await this.cbSuccess(resp.data);
             } else {
-                this.cbError(resp.errors);
+                await this.cbError(resp.errors);
             }
 
         } catch(e){

@@ -192,9 +192,7 @@ export class VuexSys{
                     }
                 },
                 set_one(state, one){
-                    if(state[one.key]){
-                        state[one.key] = one.value;
-                    }
+                    state[one.key] = one.value;
                 },
                 clear_one(state, key){
                     if(state[key]){

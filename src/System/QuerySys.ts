@@ -13,36 +13,38 @@ interface ResponseI{
     notice:{[key:string]:string};
 }
 
+interface RequestI{
+    cmd?:any;
+    one?:any,
+    list?:any,
+    status?:any,
+    cbAction?:Function, // Сбрасывае функцию обратного вызова
+}
+
 /** Система запросов к серверу */
 export class QuerySys{
 
-    private request:{[key:string]:any}; // Запрос
+    private req:RequestI; // Запрос
 
     private ctrl:BaseCtrl;
     private token:string;
-    private cbAction:Function = null; // Функция обратного вызова выполняющиеся после запроса на сервер
 
     constructor(ctrl:BaseCtrl){
 
-        this.request = {}; // Запрос
+        this.req = {}; // Запрос
 
         this.ctrl = ctrl;
     }
 
-    public async cbSuccess(aData:any){
-        let self = this;
+    public async cbSuccess(req:RequestI, aData:any){
 
         console.log('===>Success.aData',aData);
 
-        let vRequest = null;
         let vServData = null;
         let aMutation:VuexSys.ServerResponseI = <any>{};
 
-        
-        vRequest = this.request;
-
-        for(let kKey in vRequest.cmd){
-            let vAlias = vRequest.cmd[kKey];
+        for(let kKey in req.cmd){
+            let vAlias = req.cmd[kKey];
 
             if(!aMutation.cmd){
                 aMutation.cmd = {};
@@ -52,8 +54,8 @@ export class QuerySys{
 
         };
 
-        for(let kKey in vRequest.one){
-            let vAlias = vRequest.one[kKey];
+        for(let kKey in req.one){
+            let vAlias = req.one[kKey];
 
             if(!aMutation.one){
                 aMutation.one = {};
@@ -62,8 +64,8 @@ export class QuerySys{
             aMutation.one[vAlias] = aData[kKey];
         };
         
-        for(let kKey in vRequest.list){
-            let vAlias = vRequest.list[kKey];
+        for(let kKey in req.list){
+            let vAlias = req.list[kKey];
             
             if(!aMutation.list){
                 aMutation.list = {};
@@ -73,8 +75,8 @@ export class QuerySys{
 
         };
 
-        for(let kKey in vRequest.list){
-            let vAlias = vRequest.list[kKey];
+        for(let kKey in req.list){
+            let vAlias = req.list[kKey];
             
             if(!aMutation.tree){
                 aMutation.tree = {};
@@ -84,8 +86,8 @@ export class QuerySys{
 
         };
 
-        for(let kKey in vRequest.status){
-            let vAlias = vRequest.status[kKey];
+        for(let kKey in req.status){
+            let vAlias = req.status[kKey];
             
             if(!aMutation.status){
                 aMutation.status = {};
@@ -108,21 +110,21 @@ export class QuerySys{
         this.ctrl.vuexSys.fServerResponse(aMutation);
 
         // Если функция обратного вызова указана
-        if(this.cbAction){
-            this.cbAction(true, aData);
+        if(req.cbAction){
+            req.cbAction(true, aData);
         }
     }
 
     /**
      * Ответ с ошибкой
      */
-    public cbError = async function(errors:any){
+    public async cbError(req:RequestI, errors:any){
         console.log('==>cbError:',errors);
         this.ctrl.store.commit('server_error', errors);
 
         // Если функция обратного вызова указана
-        if(this.cbAction){
-            this.cbAction(false, errors);
+        if(req.cbAction){
+            req.cbAction(false, errors);
         }
     }
 
@@ -131,23 +133,21 @@ export class QuerySys{
      * function(ok:boolean, data:any)
      */
     public fAction(cbAction:Function){
-        this.cbAction = cbAction;
+        this.req.cbAction = cbAction;
     }
 
     /**
      * Инициализация запроса
      */
-    public fInit = function(){
+    public fInit(){
 
-        this.request = {
+        this.req = {
             cmd:{},
             one:{},
             list:{},
             status:{},
+            cbAction:null, // Сбрасывае функцию обратного вызова
         };
-
-        this.cbAction = null; // Сбрасывае функцию обратного вызова
-
 
         if(localStorage['token']){
             this.token = localStorage['token'];
@@ -164,29 +164,29 @@ export class QuerySys{
     /**
      * Получить модель данных
      */
-    public fOne = function(key:string, alias:string){
-        this.request.one[key] = alias;
+    public fOne(key:string, alias:string){
+        this.req.one[key] = alias;
     }
 
     /**
      * Получить список моделей данных
      */
-    public fList = function(key:string, alias:string){
-        this.request.list[key] = alias;
+    public fList(key:string, alias:string){
+        this.req.list[key] = alias;
     }
 
     /**
      * Получить команду
      */
-    public fCmd = function(key:string, alias:string){
-        this.request.cmd[key] = alias;
+    public fCmd(key:string, alias:string){
+        this.req.cmd[key] = alias;
     };
 
     /**
      * Получить статус
      */
-    public fStatus = function(key:string, alias:string){
-        this.request.status[key] = alias;
+    public fStatus(key:string, alias:string){
+        this.req.status[key] = alias;
     };
 
     public fSend(sUrl:string, data:{[key:string]:any}){
@@ -195,6 +195,9 @@ export class QuerySys{
             alert('URL - не определен');
             return false;
         }
+
+        // Создаем локальную копию req для возможности множественных асинхронных запросов
+        const reqQuery = this.req;
 
         console.log('===>token:',this.token);
         
@@ -216,15 +219,15 @@ export class QuerySys{
             let resp:ResponseI = respAxios.data;
             
             if(resp.ok){
-                this.cbSuccess(resp.data);
+                this.cbSuccess(reqQuery, resp.data);
             } else {
-                this.cbError(resp.errors);
+                this.cbError(reqQuery, resp.errors);
             }
         }).catch(() => {
             let errors = {
                 'server_no_response':'Сервер недоступен'
             }
-            this.cbError(errors);
+            this.cbError(reqQuery, errors);
 
             // if( aData.access.redirect ){
             //     window.location.replace(this.ctrl.conf.redirect.login);
@@ -240,6 +243,8 @@ export class QuerySys{
             alert('URL - не определен');
             return false;
         }
+
+        const reqQuery = this.req;
 
         console.log('===>token:',this.token);
 
@@ -261,20 +266,18 @@ export class QuerySys{
             
             let resp:ResponseI = respAxios.data;
             if(resp.ok){
-                await this.cbSuccess(resp.data);
+                await this.cbSuccess(reqQuery, resp.data);
             } else {
-                await this.cbError(resp.errors);
+                await this.cbError(reqQuery, resp.errors);
             }
             
 
         } catch(e){
-
-            console.log()
         
             let errors = {
                 'server_no_response':'Сервер недоступен'
             }
-            this.cbError(errors);
+            this.cbError(reqQuery, errors);
 
             // if( aData.access.redirect ){
             //     window.location.replace(this.ctrl.conf.redirect.login);

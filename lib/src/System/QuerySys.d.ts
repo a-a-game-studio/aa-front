@@ -1,16 +1,22 @@
 import { BaseCtrl } from "./BaseCtrl";
+interface RequestI {
+    cmd?: any;
+    one?: any;
+    list?: any;
+    status?: any;
+    cbAction?: Function;
+}
 /** Система запросов к серверу */
 export declare class QuerySys {
-    private request;
+    private req;
     private ctrl;
     private token;
-    private cbAction;
     constructor(ctrl: BaseCtrl);
-    cbSuccess(aData: any): Promise<void>;
+    cbSuccess(req: RequestI, aData: any): Promise<void>;
     /**
      * Ответ с ошибкой
      */
-    cbError: (errors: any) => Promise<void>;
+    cbError(req: RequestI, errors: any): Promise<void>;
     /**
      * Функция обратного вызова после выполнения запроса
      * function(ok:boolean, data:any)
@@ -19,23 +25,23 @@ export declare class QuerySys {
     /**
      * Инициализация запроса
      */
-    fInit: () => any;
+    fInit(): this;
     /**
      * Получить модель данных
      */
-    fOne: (key: string, alias: string) => void;
+    fOne(key: string, alias: string): void;
     /**
      * Получить список моделей данных
      */
-    fList: (key: string, alias: string) => void;
+    fList(key: string, alias: string): void;
     /**
      * Получить команду
      */
-    fCmd: (key: string, alias: string) => void;
+    fCmd(key: string, alias: string): void;
     /**
      * Получить статус
      */
-    fStatus: (key: string, alias: string) => void;
+    fStatus(key: string, alias: string): void;
     fSend(sUrl: string, data: {
         [key: string]: any;
     }): false | Promise<void>;
@@ -43,3 +49,4 @@ export declare class QuerySys {
         [key: string]: any;
     }): Promise<boolean>;
 }
+export {};

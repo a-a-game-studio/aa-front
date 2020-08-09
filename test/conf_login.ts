@@ -1,5 +1,5 @@
 
-import { conf } from '../src/Config/mainConfig'
+import * as conf from '../src/Config/mainConfig'; export { conf };
 import { ConfI } from '../src/Config/mainConfigI'
 
 
@@ -18,10 +18,11 @@ class APIURL{
     login = '/login/login'; // Залогиниться
     register = '/login/register'; // Регистрация
     logout = '/login/logout'; // Разлогиниться
-}; const apiurl = new APIURL();
+}; 
+
+export const api = new APIURL();
 
 // ======================
 
-conf.api = apiurl;
-export const pageConf:PageConfI = conf;
+
 

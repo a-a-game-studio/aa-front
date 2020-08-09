@@ -1,11 +1,10 @@
 
 export interface ConfI{
-    page:any;
-    api:any;
+    page?:any;
+    api?:any;
     common:{
-        baseURL:string; // Базовый URL
-        apiURL:string; // api URL
-        loginURL:string; // Редирект на логин 
+        api:string; // api URL
+        host:string; // Базовый URL
+        login:string; // Редирект на логин 
     }
 }
-

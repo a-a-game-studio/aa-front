@@ -1,3 +1,5 @@
+import * as conf from '../src/Config/mainConfig';
+export { conf };
 import { ConfI } from '../src/Config/mainConfigI';
 export interface PageConfI extends ConfI {
     api: APIURL;
@@ -11,5 +13,4 @@ declare class APIURL {
     register: string;
     logout: string;
 }
-export declare const pageConf: PageConfI;
-export {};
+export declare const api: APIURL;

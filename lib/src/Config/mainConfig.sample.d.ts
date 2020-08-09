@@ -1,2 +1,5 @@
-import { ConfI } from './mainConfigI';
-export declare const conf: ConfI;
+export declare const common: {
+    api: string;
+    host: string;
+    login: string;
+};

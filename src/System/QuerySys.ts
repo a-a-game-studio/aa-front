@@ -202,14 +202,14 @@ export class QuerySys{
         console.log('===>token:',this.token);
         
         const vAxios = axios.create({
-            baseURL: this.ctrl.conf.common.apiURL,
+            baseURL: this.ctrl.conf.common.api,
             timeout: 20000,
             headers: {
                 'token': this.token
             }
         });
 
-        console.log('==>URL:',this.ctrl.conf.common.apiURL, sUrl);
+        console.log('==>URL:',this.ctrl.conf.common.api, sUrl);
         console.log('==>Send data:',data);
 
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
@@ -249,14 +249,14 @@ export class QuerySys{
         console.log('===>token:',this.token);
 
         const vAxios = axios.create({
-            baseURL: this.ctrl.conf.common.apiURL,
+            baseURL: this.ctrl.conf.common.api,
             timeout: 20000,
             headers: {
                 'token': this.token
             }
         });
 
-        console.log('==>URL:',this.ctrl.conf.common.apiURL, sUrl);
+        console.log('==>URL:',this.ctrl.conf.common.api, sUrl);
         console.log('==>Send data:',data);
 
         try{

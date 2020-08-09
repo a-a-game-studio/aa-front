@@ -1,5 +1,5 @@
 import * as aaFront from '../src'
-import { pageConf as conf } from './conf_login'
+import { conf, api } from './conf_login'
 import { store, vuexSys } from './vuex_login'
 
 class Ctrl extends aaFront.BaseCtrl{
@@ -11,7 +11,7 @@ class Ctrl extends aaFront.BaseCtrl{
         this.querySys.fInit();
         this.querySys.fOne('one_user_info', 'user');
         this.querySys.fStatus('user_id', 'user_id');
-        this.querySys.fSend(conf.api.index, null);
+        this.querySys.fSend(api.index, null);
     };
 
     //=========================================
@@ -25,7 +25,7 @@ class Ctrl extends aaFront.BaseCtrl{
         this.querySys.fOne('one_user', 'user');
         this.querySys.fStatus('token', 'token');
 
-        this.querySys.fSend(conf.api.login, data);
+        this.querySys.fSend(api.login, data);
     };
 
     //=========================================
@@ -33,7 +33,7 @@ class Ctrl extends aaFront.BaseCtrl{
     public fLogout(){
         this.querySys.fInit();
         this.querySys.fCmd('cmd_logout', 'logout');
-        this.querySys.fSend(conf.api.logout, null);
+        this.querySys.fSend(api.logout, null);
 
 
         this.vuexSys.fClearStatus('token');

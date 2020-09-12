@@ -137,7 +137,7 @@ export declare class VuexSys {
      * @param state
      */
     registerModuleStatus(state: {
-        [key: string]: number | string | boolean;
+        [key: string]: any;
     }): this;
     /**
      * Получить корневой объект состояния

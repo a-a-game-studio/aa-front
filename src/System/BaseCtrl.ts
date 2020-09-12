@@ -23,37 +23,37 @@ export class BaseCtrl{
         if(this.store.state.cmd){
             this.cmd = this.store.state.cmd;
         } else {
-            console.error('Не определен модуль cmd');
+            console.warn('Не определен модуль cmd');
         }
 
         if(this.store.state.one){
             this.one = this.store.state.one;
         } else {
-            console.error('Не определен модуль one');
+            console.warn('Не определен модуль one');
         }
 
         if(this.store.state.list){
             this.list = this.store.state.list;
         } else {
-            console.error('Не определен модуль one');
+            console.warn('Не определен модуль list');
         }
 
         if(this.store.state.status){
             this.status = this.store.state.status;
         } else {
-            console.error('Не определен модуль status');
+            console.warn('Не определен модуль status');
         }
 
         if(this.store.state.tree){
             this.tree = this.store.state.tree;
         } else {
-            console.error('Не определен модуль tree');
+            console.warn('Не определен модуль tree');
         }
 
         if(this.store.state.error){
             this.error = this.store.state.error;
         } else {
-            console.error('Не определен модуль error');
+            console.warn('Не определен модуль error');
         }
 
         // Определяем построитель запросов

@@ -305,7 +305,7 @@ export class VuexSys{
      * Регистрация модуля состояния статуса приложения
      * @param state 
      */
-    public registerModuleStatus(state:{[key:string]:number|string|boolean}){
+    public registerModuleStatus(state:{[key:string]:any}){
 
         this.store.registerModule('status', {
             state:state,

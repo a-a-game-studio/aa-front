@@ -1,10 +1,10 @@
 
-import * as conf from '../src/Config/mainConfig'; export { conf };
-import { ConfI } from '../src/Config/mainConfigI'
+import * as conf from './config/MainConfig'; export { conf };
+
 
 
 // Переопределяем интерфейс конфигурации
-export interface PageConfI extends ConfI{
+export interface PageConfI{
     api:APIURL;
 }
 

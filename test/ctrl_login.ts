@@ -4,7 +4,7 @@ import { store, vuexSys } from './vuex_login'
 
 class Ctrl extends aaFront.BaseCtrl{
     constructor(store:aaFront.VuexSys){
-        super(store, conf);
+        super(store);
     }
 
     public fInit(){

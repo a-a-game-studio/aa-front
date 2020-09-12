@@ -1,7 +1,6 @@
-import * as conf from '../src/Config/mainConfig';
+import * as conf from './config/MainConfig';
 export { conf };
-import { ConfI } from '../src/Config/mainConfigI';
-export interface PageConfI extends ConfI {
+export interface PageConfI {
     api: APIURL;
 }
 /**

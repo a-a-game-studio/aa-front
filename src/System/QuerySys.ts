@@ -1,7 +1,7 @@
 
 
 import { BaseCtrl } from "./BaseCtrl";
-import axios from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import * as VuexSys from "./VuexSys"
 
 interface ResponseI{
@@ -28,6 +28,7 @@ export class QuerySys{
 
     private ctrl:BaseCtrl;
     private token:string;
+    private conf:AxiosRequestConfig;
 
     constructor(ctrl:BaseCtrl){
 
@@ -38,7 +39,7 @@ export class QuerySys{
 
     public async cbSuccess(req:RequestI, aData:any){
 
-        console.log('===>Success.aData',aData);
+        // console.log('===>Success.aData',aData);
 
         let vServData = null;
         let aMutation:VuexSys.ServerResponseI = <any>{};
@@ -105,7 +106,7 @@ export class QuerySys{
             this.token = localStorage['token'] = aData['token'];
         }
 
-        console.log('===>aMutation:',aMutation);
+        // console.log('===>aMutation:',aMutation);
 
         this.ctrl.vuexSys.fServerResponse(aMutation);
 
@@ -119,7 +120,7 @@ export class QuerySys{
      * Ответ с ошибкой
      */
     public async cbError(req:RequestI, errors:any){
-        console.log('==>cbError:',errors);
+        console.error('==>cbError:',errors);
         this.ctrl.store.commit('server_error', errors);
 
         // Если функция обратного вызова указана
@@ -134,6 +135,13 @@ export class QuerySys{
      */
     public fAction(cbAction:Function){
         this.req.cbAction = cbAction;
+    }
+
+    /**
+     * Инициализация запроса
+     */
+    public fConfig(conf:AxiosRequestConfig){
+        this.conf = conf;
     }
 
     /**
@@ -192,29 +200,21 @@ export class QuerySys{
     public fSend(sUrl:string, data:{[key:string]:any}){
 
         if(!sUrl){
-            alert('URL - не определен');
+            console.error('==ERROR>', 'URL запроса не определен!');
             return false;
         }
 
         // Создаем локальную копию req для возможности множественных асинхронных запросов
         const reqQuery = this.req;
-
-        console.log('===>token:',this.token);
         
-        const vAxios = axios.create({
-            baseURL: this.ctrl.conf.common.api,
-            timeout: 20000,
-            headers: {
-                'token': this.token
-            }
-        });
+        // Создаем соединение
+        let vAxios = this.fCreateConnection();
 
-        console.log('==>URL:',this.ctrl.conf.common.api, sUrl);
-        console.log('==>Send data:',data);
+        if(this.conf){
+            console.log('===URL>:', this.conf.baseURL, ' - ', sUrl);
+        }
 
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
-
-            console.log('===>respAxios:',respAxios);
 
             let resp:ResponseI = respAxios.data;
             
@@ -228,10 +228,6 @@ export class QuerySys{
                 'server_no_response':'Сервер недоступен'
             }
             this.cbError(reqQuery, errors);
-
-            // if( aData.access.redirect ){
-            //     window.location.replace(this.ctrl.conf.redirect.login);
-            // }
         });
 
         return promiseAxios;
@@ -240,30 +236,22 @@ export class QuerySys{
     public async faSend(sUrl:string, data:{[key:string]:any}){
 
         if(!sUrl){
-            alert('URL - не определен');
+            console.error('==ERROR>', 'URL запроса не определен!');
             return false;
         }
 
         const reqQuery = this.req;
 
-        console.log('===>token:',this.token);
+        // Создаем соединение
+        let vAxios = this.fCreateConnection();
 
-        const vAxios = axios.create({
-            baseURL: this.ctrl.conf.common.api,
-            timeout: 20000,
-            headers: {
-                'token': this.token
-            }
-        });
-
-        console.log('==>URL:',this.ctrl.conf.common.api, sUrl);
-        console.log('==>Send data:',data);
+        if(this.conf){
+            console.log('===URL>:', this.conf.baseURL, ' - ', sUrl);
+        }
 
         try{
             let respAxios = await vAxios.post(sUrl, data);
 
-            console.log('===>respAxios:',respAxios);
-            
             let resp:ResponseI = respAxios.data;
             if(resp.ok){
                 await this.cbSuccess(reqQuery, resp.data);
@@ -278,13 +266,27 @@ export class QuerySys{
                 'server_no_response':'Сервер недоступен'
             }
             this.cbError(reqQuery, errors);
-
-            // if( aData.access.redirect ){
-            //     window.location.replace(this.ctrl.conf.redirect.login);
-            // }
         }
 
     };
+
+
+    /**
+     * Создать соединение
+     */
+    private fCreateConnection():AxiosInstance{
+        let vAxios = null;
+        if(this.conf){
+            vAxios = axios.create(this.conf);
+        } else {
+            console.warn('==WARNING>', 'Отсутствует конфигурация соединения!');
+            vAxios = axios.create({
+                timeout: 30000,
+            });
+        }
+
+        return vAxios;
+    }
 
 
 };

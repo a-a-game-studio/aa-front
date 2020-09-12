@@ -1,4 +1,5 @@
 import { BaseCtrl } from "./BaseCtrl";
+import { AxiosRequestConfig } from 'axios';
 interface RequestI {
     cmd?: any;
     one?: any;
@@ -11,6 +12,7 @@ export declare class QuerySys {
     private req;
     private ctrl;
     private token;
+    private conf;
     constructor(ctrl: BaseCtrl);
     cbSuccess(req: RequestI, aData: any): Promise<void>;
     /**
@@ -22,6 +24,10 @@ export declare class QuerySys {
      * function(ok:boolean, data:any)
      */
     fAction(cbAction: Function): void;
+    /**
+     * Инициализация запроса
+     */
+    fConfig(conf: AxiosRequestConfig): void;
     /**
      * Инициализация запроса
      */
@@ -48,5 +54,9 @@ export declare class QuerySys {
     faSend(sUrl: string, data: {
         [key: string]: any;
     }): Promise<boolean>;
+    /**
+     * Создать соединение
+     */
+    private fCreateConnection;
 }
 export {};

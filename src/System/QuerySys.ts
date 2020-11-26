@@ -16,7 +16,8 @@ interface ResponseI{
 interface RequestI{
     cmd?:any;
     one?:any,
-    list?:any,
+	list?:any,
+	tree?:any,
     status?:any,
     cbAction?:Function, // Сбрасывае функцию обратного вызова
 }
@@ -50,7 +51,7 @@ export class QuerySys{
             if(!aMutation.cmd){
                 aMutation.cmd = {};
             }
-            
+
             aMutation.cmd[vAlias] = aData[kKey];
 
         };
@@ -61,35 +62,35 @@ export class QuerySys{
             if(!aMutation.one){
                 aMutation.one = {};
             }
-            
+
             aMutation.one[vAlias] = aData[kKey];
         };
-        
+
         for(let kKey in req.list){
             let vAlias = req.list[kKey];
-            
+
             if(!aMutation.list){
                 aMutation.list = {};
             }
-            
+
             aMutation.list[vAlias] = aData[kKey];
 
         };
 
-        for(let kKey in req.list){
-            let vAlias = req.list[kKey];
-            
+        for(let kKey in req.tree){
+            let vAlias = req.tree[kKey];
+
             if(!aMutation.tree){
                 aMutation.tree = {};
             }
-            
+
             aMutation.tree[vAlias] = aData[kKey];
 
         };
 
         for(let kKey in req.status){
             let vAlias = req.status[kKey];
-            
+
             if(!aMutation.status){
                 aMutation.status = {};
             }
@@ -98,7 +99,7 @@ export class QuerySys{
                 console.log('update state - ',kKey,vAlias)
                 aMutation.status[vAlias] = aData[kKey];
             }
-            
+
         };
 
         // Если прислан токен нужно его обновить в localstorage
@@ -206,7 +207,7 @@ export class QuerySys{
 
         // Создаем локальную копию req для возможности множественных асинхронных запросов
         const reqQuery = this.req;
-        
+
         // Создаем соединение
         let vAxios = this.fCreateConnection();
 
@@ -217,7 +218,7 @@ export class QuerySys{
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
 
             let resp:ResponseI = respAxios.data;
-            
+
             if(resp.ok){
                 this.cbSuccess(reqQuery, resp.data);
             } else {
@@ -258,10 +259,10 @@ export class QuerySys{
             } else {
                 await this.cbError(reqQuery, resp.errors);
             }
-            
+
 
         } catch(e){
-        
+
             let errors = {
                 'server_no_response':'Сервер недоступен'
             }

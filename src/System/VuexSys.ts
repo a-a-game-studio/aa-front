@@ -6,7 +6,7 @@ import Vue from 'vue';
 Vue.use(Vuex);
 
 export interface RootStateI{
-    mix:Store<any>;
+    ix:Store<any>;
     cmd:Store<any>;
     one:Store<any>;
     list:Store<any>;
@@ -16,7 +16,7 @@ export interface RootStateI{
 }
 
 export interface ServerResponseI{
-    mix:{[key:string]:any};
+    ix:{[key:string]:any};
     cmd:{[key:string]:any};
     one:{[key:string]:any};
     list:{[key:string]:any[]};
@@ -171,12 +171,12 @@ export class VuexSys{
     }
 
     /**
-     * Регистрация модуля состояния смешанных вычисляемых значений
+     * Регистрация модуля индексированные списки
      * @param state 
      */
-    public registerModuleMix(state:{[key:string]:any}){
+    public registerModuleIx(state:{[key:string]:any}){
 
-        this.store.registerModule('mix', {
+        this.store.registerModule('ix', {
             state:state,
         });
 
@@ -356,10 +356,10 @@ export class VuexSys{
     }
     
     /**
-     * Получить объект состояния смешаных вычисляемых значений
+     * Получить объект состояния индексы
      */
-    public getMixStore(){
-        return this.store.state.mix;
+    public getIxStore(){
+        return this.store.state.ix;
     }
 
     /**

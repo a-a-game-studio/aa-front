@@ -1,6 +1,6 @@
 import { Store } from 'vuex';
 export interface RootStateI {
-    mix: Store<any>;
+    ix: Store<any>;
     cmd: Store<any>;
     one: Store<any>;
     list: Store<any>;
@@ -9,7 +9,7 @@ export interface RootStateI {
     error: Store<any>;
 }
 export interface ServerResponseI {
-    mix: {
+    ix: {
         [key: string]: any;
     };
     cmd: {
@@ -109,10 +109,10 @@ export declare class VuexSys {
         [key: string]: any;
     }): this;
     /**
-     * Регистрация модуля состояния смешанных вычисляемых значений
+     * Регистрация модуля индексированные списки
      * @param state
      */
-    registerModuleMix(state: {
+    registerModuleIx(state: {
         [key: string]: any;
     }): this;
     /**
@@ -155,9 +155,9 @@ export declare class VuexSys {
      */
     getRootStore(): Store<RootStateI>;
     /**
-     * Получить объект состояния смешаных вычисляемых значений
+     * Получить объект состояния индексы
      */
-    getMixStore(): Store<any>;
+    getIxStore(): Store<any>;
     /**
      * Получить объект состояния команд
      */

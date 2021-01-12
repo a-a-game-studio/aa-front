@@ -1,6 +1,6 @@
 {
   "name": "@a-a-game-studio/aa-front",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "Base front application",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",

@@ -19,6 +19,8 @@ interface RequestI{
     list?:any,
     status?:any,
     cbAction?:Function, // Сбрасывае функцию обратного вызова
+    cbActionOk?:Function, // Сбрасывае функцию обратного вызова - успешного выполнения
+    cbActionErr?:Function, // Сбрасывае функцию обратного вызова - выполнения с ошибкой
 }
 
 /** Система запросов к серверу */
@@ -114,6 +116,11 @@ export class QuerySys{
         if(req.cbAction){
             req.cbAction(true, aData);
         }
+
+        // Если функция обратного вызова указана - успешного выполнения
+        if(req.cbActionOk){
+            req.cbActionOk(true, aData);
+        }
     }
 
     /**
@@ -127,6 +134,11 @@ export class QuerySys{
         if(req.cbAction){
             req.cbAction(false, errors);
         }
+
+        // Если функция обратного вызова указана с ошибкой указана
+        if(req.cbActionErr){
+            req.cbActionErr(false, errors);
+        }
     }
 
     /**
@@ -135,6 +147,22 @@ export class QuerySys{
      */
     public fAction(cbAction:Function){
         this.req.cbAction = cbAction;
+    }
+
+    /**
+     * Функция обратного вызова после успешного выполнения запроса
+     * function(data:any)
+     */
+    public fActionOk(cbActionOk:Function){
+        this.req.cbActionOk = cbActionOk;
+    }
+
+    /**
+     * Функция обратного вызова после успешного выполнения запроса
+     * function(errors:any)
+     */
+    public fActionErr(cbActionErr:Function){
+        this.req.cbActionErr = cbActionErr;
     }
 
     /**
@@ -155,6 +183,8 @@ export class QuerySys{
             list:{},
             status:{},
             cbAction:null, // Сбрасывае функцию обратного вызова
+            cbActionOk:null, // Сбрасывае функцию обратного вызова - успешного выполнения
+            cbActionErr:null, // Сбрасывае функцию обратного вызова - с ошибкой
         };
 
         if(localStorage['token']){

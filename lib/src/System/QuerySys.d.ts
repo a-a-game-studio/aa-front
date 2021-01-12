@@ -6,6 +6,8 @@ interface RequestI {
     list?: any;
     status?: any;
     cbAction?: Function;
+    cbActionOk?: Function;
+    cbActionErr?: Function;
 }
 /** Система запросов к серверу */
 export declare class QuerySys {
@@ -24,6 +26,16 @@ export declare class QuerySys {
      * function(ok:boolean, data:any)
      */
     fAction(cbAction: Function): void;
+    /**
+     * Функция обратного вызова после успешного выполнения запроса
+     * function(data:any)
+     */
+    fActionOk(cbActionOk: Function): void;
+    /**
+     * Функция обратного вызова после успешного выполнения запроса
+     * function(errors:any)
+     */
+    fActionErr(cbActionErr: Function): void;
     /**
      * Инициализация запроса
      */

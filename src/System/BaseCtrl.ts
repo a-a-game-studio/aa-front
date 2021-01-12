@@ -6,6 +6,7 @@ import { QuerySys } from './QuerySys';
 export class BaseCtrl{
     // Store
     public store:Store<RootStateI>;
+    public ix:any;
     public cmd:any;
     public one:any;
     public list:any;
@@ -19,6 +20,12 @@ export class BaseCtrl{
     public constructor(vuexSys:VuexSys){
         this.vuexSys = vuexSys;
         this.store = vuexSys.getRootStore();
+
+        if(this.store.state.ix){
+            this.ix = this.store.state.ix;
+        } else {
+            console.warn('Не определен модуль ix');
+        }
 
         if(this.store.state.cmd){
             this.cmd = this.store.state.cmd;

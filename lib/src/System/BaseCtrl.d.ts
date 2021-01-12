@@ -3,6 +3,7 @@ import { VuexSys, RootStateI } from './VuexSys';
 import { QuerySys } from './QuerySys';
 export declare class BaseCtrl {
     store: Store<RootStateI>;
+    ix: any;
     cmd: any;
     one: any;
     list: any;

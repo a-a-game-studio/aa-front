@@ -6,6 +6,7 @@ import Vue from 'vue';
 Vue.use(Vuex);
 
 export interface RootStateI{
+    mix:Store<any>;
     cmd:Store<any>;
     one:Store<any>;
     list:Store<any>;
@@ -15,6 +16,7 @@ export interface RootStateI{
 }
 
 export interface ServerResponseI{
+    mix:{[key:string]:any};
     cmd:{[key:string]:any};
     one:{[key:string]:any};
     list:{[key:string]:any[]};
@@ -163,6 +165,19 @@ export class VuexSys{
                     }
                 },
             }
+        });
+
+        return this;
+    }
+
+    /**
+     * Регистрация модуля состояния смешанных вычисляемых значений
+     * @param state 
+     */
+    public registerModuleMix(state:{[key:string]:any}){
+
+        this.store.registerModule('mix', {
+            state:state,
         });
 
         return this;
@@ -338,6 +353,13 @@ export class VuexSys{
      */
     public getRootStore(){
         return this.store;
+    }
+    
+    /**
+     * Получить объект состояния смешаных вычисляемых значений
+     */
+    public getMixStore(){
+        return this.store.state.mix;
     }
 
     /**

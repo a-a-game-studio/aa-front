@@ -4,6 +4,7 @@ interface RequestI {
     cmd?: any;
     one?: any;
     list?: any;
+    tree?: any;
     status?: any;
     cbAction?: Function;
     cbActionOk?: Function;

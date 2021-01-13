@@ -120,7 +120,7 @@ export class QuerySys{
 
         // Если функция обратного вызова указана - успешного выполнения
         if(req.cbActionOk){
-            req.cbActionOk(true, aData);
+            req.cbActionOk(aData);
         }
     }
 
@@ -138,7 +138,7 @@ export class QuerySys{
 
         // Если функция обратного вызова указана с ошибкой указана
         if(req.cbActionErr){
-            req.cbActionErr(false, errors);
+            req.cbActionErr(errors);
         }
     }
 

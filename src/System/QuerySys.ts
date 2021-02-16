@@ -98,7 +98,7 @@ export class QuerySys{
             }
 
             if( this.ctrl.status[vAlias] != aData[kKey] ){
-                console.log('update state - ',kKey,vAlias)
+                // console.log('update state - ',kKey,vAlias)
                 aMutation.status[vAlias] = aData[kKey];
             }
 
@@ -194,7 +194,7 @@ export class QuerySys{
             this.token = null;
         }
 
-        console.log('===>token:',this.token);
+        // console.log('===>token:',this.token);
 
 
         return this;
@@ -241,9 +241,9 @@ export class QuerySys{
         // Создаем соединение
         let vAxios = this.fCreateConnection();
 
-        if(this.conf){
-            console.log('===URL>:', this.conf.baseURL, ' - ', sUrl);
-        }
+        // if(this.conf){
+        //     console.log('===URL>:', this.conf.baseURL, ' - ', sUrl);
+        // }
 
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
 
@@ -276,9 +276,9 @@ export class QuerySys{
         // Создаем соединение
         let vAxios = this.fCreateConnection();
 
-        if(this.conf){
-            console.log('===URL>:', this.conf.baseURL, ' - ', sUrl);
-        }
+        // if(this.conf){
+        //     console.log('===URL>:', this.conf.baseURL, ' - ', sUrl);
+        // }
 
         try{
             let respAxios = await vAxios.post(sUrl, data);

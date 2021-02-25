@@ -35,6 +35,31 @@ export declare class VuexSys {
     private store;
     constructor();
     /**
+     * Обновиться список
+     * @param key
+     */
+    fRefreshCmd(key: string): void;
+    /**
+     * Обновиться объект
+     * @param key
+     */
+    fRefreshOne(key: string): void;
+    /**
+     * Обновиться список
+     * @param key
+     */
+    fRefreshList(key: string): void;
+    /**
+     * Обновиться индекс
+     * @param key
+     */
+    fRefreshIx(key: string): void;
+    /**
+     * Обновиться индекс
+     * @param key
+     */
+    fRefreshTree(key: string): void;
+    /**
      * module: all
      * Мутация ответа сервера
      * @param response

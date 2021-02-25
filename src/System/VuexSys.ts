@@ -37,6 +37,46 @@ export class VuexSys{
         });
     }
 
+    /**
+     * Обновиться список
+     * @param key 
+     */
+    public fRefreshCmd(key:string){
+        this.store.commit('refresh_cmd', key);
+    }
+
+    /**
+     * Обновиться объект
+     * @param key 
+     */
+    public fRefreshOne(key:string){
+        this.store.commit('refresh_one', key);
+    }
+
+    /**
+     * Обновиться список
+     * @param key 
+     */
+    public fRefreshList(key:string){
+        this.store.commit('refresh_list', key);
+    }
+
+    /**
+     * Обновиться индекс
+     * @param key 
+     */
+    public fRefreshIx(key:string){
+        this.store.commit('refresh_ix', key);
+    }
+
+    /**
+     * Обновиться индекс
+     * @param key 
+     */
+    public fRefreshTree(key:string){
+        this.store.commit('refresh_tree', key);
+    }
+
     // ============================================
 
     /**
@@ -156,7 +196,7 @@ export class VuexSys{
         this.store.registerModule('cmd', {
             state:state,
             mutations:{
-                server_response(state, response){
+                server_response(state:any, response:any){
                     if(response.cmd){
                         for(let k in response.cmd){
                             let v = response.cmd[k];
@@ -164,6 +204,13 @@ export class VuexSys{
                         };
                     }
                 },
+                refresh_cmd(state:any, key:string){
+                    if(state[key]){
+                        const tempVal = state[key];
+                        state[key] = {};
+                        state[key] = tempVal;
+                    }
+                }
             }
         });
 
@@ -178,6 +225,15 @@ export class VuexSys{
 
         this.store.registerModule('ix', {
             state:state,
+            mutations: {
+                refresh_ix(state:any, key:string){
+                    if(state[key]){
+                        const tempVal = state[key];
+                        state[key] = {};
+                        state[key] = tempVal;
+                    }
+                }
+            },
         });
 
         return this;
@@ -192,7 +248,7 @@ export class VuexSys{
         this.store.registerModule('one', {
             state:state,
             mutations: {
-                server_response(state, response){
+                server_response(state:any, response:any){
                     // console.log('server_response:one', response);
                     if(response.one){
                         for(let k in response.one){
@@ -201,17 +257,24 @@ export class VuexSys{
                         };
                     }
                 },
-                set_one_field(state, field){
+                set_one_field(state:any, field:any){
                     if(state[field.key]){
                         state[field.key][field.name] = field.value;
                     }
                 },
-                set_one(state, one){
+                set_one(state:any, one:any){
                     state[one.key] = one.value;
                 },
-                clear_one(state, key){
+                clear_one(state:any, key:string){
                     if(state[key]){
                         state[key] = null;
+                    }
+                },
+                refresh_one(state:any, key:string){
+                    if(state[key]){
+                        const tempVal = state[key];
+                        state[key] = {};
+                        state[key] = tempVal;
                     }
                 }
             },
@@ -229,7 +292,7 @@ export class VuexSys{
         this.store.registerModule('list', {
             state:state,
             mutations: {
-                server_response(state, response){
+                server_response(state:any, response:any){
                     // console.log('server_response:list', response);
                     if(response.list){
                         for(let k in response.list){
@@ -239,14 +302,21 @@ export class VuexSys{
                     }
         
                 },
-                set_list(state, list){
+                set_list(state:any, list:any){
                     if(state[list.key]){
                         state[list.key] = list.value;
                     }
                 },
-                clear_list(state, key){
+                clear_list(state:any, key:any){
                     if(state[key]){
                         state[key] = null;
+                    }
+                },
+                refresh_list(state:any, key:string){
+                    if(state[key]){
+                        const tempVal = state[key];
+                        state[key] = [];
+                        state[key] = tempVal;
                     }
                 }
             },
@@ -264,7 +334,7 @@ export class VuexSys{
         this.store.registerModule('tree', {
             state:state,
             mutations: {
-                server_response(state, response){
+                server_response(state:any, response:any){
                     // console.log('server_response:tree', response);
                     if(response.tree){
                         for(let k in response.tree){
@@ -274,9 +344,16 @@ export class VuexSys{
                     }
         
                 },
-                clear_tree(state, key){
+                clear_tree(state:any, key:any){
                     if(state[key]){
                         state[key] = null;
+                    }
+                },
+                refresh_tree(state:any, key:string){
+                    if(state[key]){
+                        const tempVal = state[key];
+                        state[key] = {};
+                        state[key] = tempVal;
                     }
                 }
             },
@@ -294,7 +371,7 @@ export class VuexSys{
         this.store.registerModule('error', {
             state:state,
             mutations: {
-                server_error(state, errors){
+                server_error(state:any, errors:any){
                     // console.log('server_response:error', errors);
                     if(errors){
                         for(let k in errors){
@@ -304,7 +381,7 @@ export class VuexSys{
                     }
         
                 },
-                clear_error(state, key){
+                clear_error(state:any, key:any){
                     if(state[key]){
                         state[key] = null;
                     }
@@ -325,7 +402,7 @@ export class VuexSys{
         this.store.registerModule('status', {
             state:state,
             mutations: {
-                server_response(state, response){
+                server_response(state:any, response:any){
                     // console.log('server_response:status', response);
                     if(response.status){
                         for(let k in response.status){
@@ -334,10 +411,10 @@ export class VuexSys{
                         };
                     }
                 },
-                set_status(state, field){
+                set_status(state:any, field:any){
                     state[field.key] = field.value;
                 },
-                clear_status(state, key){
+                clear_status(state:any, key:any){
                     if(state[key]){
                         state[key] = 0;
                     }

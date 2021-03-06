@@ -19,6 +19,7 @@
   "homepage": "https://github.com/a-a-game-studio/aa-front#readme",
   "peerDependencies": {},
   "scripts": {
+    "release": "./sh/release.sh",
     "test": "ts-mocha",
     "serve": "vue-cli-service serve test/main.ts",
     "build": "tsc"

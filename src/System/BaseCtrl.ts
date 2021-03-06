@@ -29,7 +29,6 @@ export class BaseCtrl{
     /** Хранилище - ошибок */
     public error:any;
 
-    public querySys:QuerySys;
     public vuexSys:VuexSys;
 
     public constructor(vuexSys:VuexSys){
@@ -77,9 +76,6 @@ export class BaseCtrl{
         } else {
             console.warn('Не определен модуль error');
         }
-
-        // Определяем построитель запросов
-        this.querySys = new QuerySys(this);
         
     }
 }

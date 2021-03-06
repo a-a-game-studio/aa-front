@@ -28,16 +28,12 @@ interface RequestI{
 export class QuerySys{
 
     private req:RequestI; // Запрос
-
-    private ctrl:BaseCtrl;
     private token:string;
     private conf:AxiosRequestConfig;
 
-    constructor(ctrl:BaseCtrl){
+    constructor(){
 
         this.req = {}; // Запрос
-
-        this.ctrl = ctrl;
     }
 
     /**

@@ -1,7 +1,6 @@
 
 
 import { VuexSys } from './VuexSys'
-import { QuerySys } from './QuerySys';
 
 /** Базовый контроллер - глобальный объект */
 export class BaseCtrl{

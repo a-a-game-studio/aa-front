@@ -1,17 +1,32 @@
 
-import { Store }  from 'vuex';
-import { VuexSys, RootStateI } from './VuexSys'
+
+import { VuexSys } from './VuexSys'
 import { QuerySys } from './QuerySys';
 
+/** Базовый контроллер - глобальный объект */
 export class BaseCtrl{
-    // Store
-    public store:Store<RootStateI>;
+    /** ROOT хранилище */
+    public store:any;
+
+    /** Хранилище - Индексированных списоков */
     public ix:any;
+
+    /** Хренилище - команд */
     public cmd:any;
+
+    /** Хранилище - моделей */
     public one:any;
+
+    /** Хранилище списоков */
     public list:any;
+
+    /** Хранилище - Статуса */
     public status:any;
+
+    /** Хранилище - деревьев */
     public tree:any;
+
+    /** Хранилище - ошибок */
     public error:any;
 
     public querySys:QuerySys;
@@ -21,44 +36,44 @@ export class BaseCtrl{
         this.vuexSys = vuexSys;
         this.store = vuexSys.getRootStore();
 
-        if(this.store.state.ix){
-            this.ix = this.store.state.ix;
+        if(vuexSys.getIxStore()){
+            this.ix = vuexSys.getIxStore();
         } else {
             console.warn('Не определен модуль ix');
         }
 
-        if(this.store.state.cmd){
-            this.cmd = this.store.state.cmd;
+        if(vuexSys.getCmdStore()){
+            this.cmd = vuexSys.getCmdStore();
         } else {
             console.warn('Не определен модуль cmd');
         }
 
-        if(this.store.state.one){
-            this.one = this.store.state.one;
+        if(vuexSys.getOneStore()){
+            this.one = vuexSys.getOneStore();
         } else {
             console.warn('Не определен модуль one');
         }
 
-        if(this.store.state.list){
-            this.list = this.store.state.list;
+        if(vuexSys.getListStore()){
+            this.list = vuexSys.getListStore();
         } else {
             console.warn('Не определен модуль list');
         }
 
-        if(this.store.state.status){
-            this.status = this.store.state.status;
+        if(vuexSys.getStatusStore()){
+            this.status = vuexSys.getStatusStore();
         } else {
             console.warn('Не определен модуль status');
         }
 
-        if(this.store.state.tree){
-            this.tree = this.store.state.tree;
+        if(vuexSys.getTreeStore()){
+            this.tree = vuexSys.getTreeStore();
         } else {
             console.warn('Не определен модуль tree');
         }
 
-        if(this.store.state.error){
-            this.error = this.store.state.error;
+        if(vuexSys.getErrorStore()){
+            this.error = vuexSys.getErrorStore();
         } else {
             console.warn('Не определен модуль error');
         }

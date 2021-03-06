@@ -23,7 +23,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "tslib": "^2.1.0"
   },
   "devDependencies": {},
   "directories": {

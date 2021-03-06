@@ -4,6 +4,7 @@
         "module": "commonjs",
         "importHelpers": true,
         "noImplicitAny": true,
+        "noEmitHelpers":true,
         "moduleResolution": "node",
         "preserveConstEnums": true,
         "experimentalDecorators": true,

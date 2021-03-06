@@ -41,7 +41,7 @@ export class QuerySys{
      * @param req // Запрос
      * @param aData //
      */
-    public async cbSuccess(req:RequestI, aData:any){
+    public cbSuccess(req:RequestI, aData:any){
 
         // Если функция обратного вызова указана
         if(req.cbAction){
@@ -57,7 +57,7 @@ export class QuerySys{
     /**
      * Ответ с ошибкой
      */
-    public async cbError(req:RequestI, errors:any){
+    public cbError(req:RequestI, errors:any){
         console.error('==>cbError:',errors);
 
         // Если функция обратного вызова указана

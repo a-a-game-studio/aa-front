@@ -2,8 +2,8 @@
   "name": "@a-a-game-studio/aa-front",
   "version": "0.1.4",
   "description": "Base front application",
-  "main": "lib/src/index.js",
-  "types": "lib/src/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/a-a-game-studio/aa-front.git"

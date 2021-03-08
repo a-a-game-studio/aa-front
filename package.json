@@ -11,6 +11,9 @@
   "keywords": [
     "front"
   ],
+  "files": [
+    "lib/**/*"
+  ],
   "author": "a-a-game-studio",
   "license": "BSD-3-Clause",
   "bugs": {

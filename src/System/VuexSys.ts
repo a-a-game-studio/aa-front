@@ -35,7 +35,7 @@ export class VuexSys{
 
         this.store.registerModule('cmd', { state:state });
 
-        return this;
+        return this.getCmdStore();
     }
 
     /**
@@ -46,7 +46,7 @@ export class VuexSys{
 
         this.store.registerModule('ix', { state:state });
 
-        return this;
+        return this.getIxStore();
     }
 
     /**
@@ -57,7 +57,7 @@ export class VuexSys{
 
         this.store.registerModule('one', { state:state });
 
-        return this;
+        return this.getOneStore();
     }
 
     /**
@@ -68,7 +68,7 @@ export class VuexSys{
 
         this.store.registerModule('list', { state:state });
 
-        return this;
+        return this.getListStore();
     }
 
     /**
@@ -79,7 +79,7 @@ export class VuexSys{
 
         this.store.registerModule('tree', { state:state });
 
-        return this;
+        return this.getTreeStore();
     }
 
     /**
@@ -90,7 +90,7 @@ export class VuexSys{
 
         this.store.registerModule('error', { state:state });
 
-        return this;
+        return this.getErrorStore();
     }
 
 
@@ -102,7 +102,7 @@ export class VuexSys{
 
         this.store.registerModule('status', { state:state });
 
-        return this;
+        return this.getStatusStore();
     }
 
     /**

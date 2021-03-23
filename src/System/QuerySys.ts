@@ -137,7 +137,6 @@ export class QuerySys{
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
 
             let resp:ResponseI = respAxios.data;
-            console.log(respAxios);
 
             if(resp.ok){
                 this.cbSuccess(reqQuery, resp.data);
@@ -146,8 +145,7 @@ export class QuerySys{
             }
         }).catch((e) => {
             let errors = {
-                'server_no_response':'Сервер недоступен',
-                'server_trace':e
+                'trace':e
             }
             this.cbError(reqQuery, errors);
         });

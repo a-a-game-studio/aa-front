@@ -137,6 +137,7 @@ export class QuerySys{
         let promiseAxios = vAxios.post(sUrl, data).then((respAxios) => {
 
             let resp:ResponseI = respAxios.data;
+            console.log(respAxios);
 
             if(resp.ok){
                 this.cbSuccess(reqQuery, resp.data);

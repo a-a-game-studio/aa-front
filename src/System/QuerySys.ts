@@ -113,12 +113,6 @@ export class QuerySys{
             cbActionErr:null, // Сбрасывае функцию обратного вызова - с ошибкой
         };
 
-        if(localStorage['token']){
-            this.token = localStorage['token'];
-        } else {
-            this.token = null;
-        }
-
         return this;
     }
 
@@ -149,9 +143,10 @@ export class QuerySys{
             } else {
                 this.cbError(reqQuery, resp.errors);
             }
-        }).catch(() => {
+        }).catch((e) => {
             let errors = {
-                'server_no_response':'Сервер недоступен'
+                'server_no_response':'Сервер недоступен',
+                'server_trace':e
             }
             this.cbError(reqQuery, errors);
         });

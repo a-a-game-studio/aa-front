@@ -34,45 +34,31 @@ export class BaseCtrl{
         this.vuexSys = vuexSys;
         this.store = vuexSys.getRootStore();
 
-        if(vuexSys.getIxStore()){
-            this.ix = vuexSys.getIxStore();
-        } else {
+        if(!this.ix){
             console.warn('Не определен модуль ix');
         }
 
-        if(vuexSys.getCmdStore()){
-            this.cmd = vuexSys.getCmdStore();
-        } else {
+        if(!this.cmd){
             console.warn('Не определен модуль cmd');
         }
 
-        if(vuexSys.getOneStore()){
-            this.one = vuexSys.getOneStore();
-        } else {
+        if(!this.one){
             console.warn('Не определен модуль one');
         }
 
-        if(vuexSys.getListStore()){
-            this.list = vuexSys.getListStore();
-        } else {
+        if(!this.list){
             console.warn('Не определен модуль list');
         }
 
-        if(vuexSys.getStatusStore()){
-            this.status = vuexSys.getStatusStore();
-        } else {
+        if(!this.status){
             console.warn('Не определен модуль status');
         }
 
-        if(vuexSys.getTreeStore()){
-            this.tree = vuexSys.getTreeStore();
-        } else {
+        if(!this.tree){
             console.warn('Не определен модуль tree');
         }
 
-        if(vuexSys.getErrorStore()){
-            this.error = vuexSys.getErrorStore();
-        } else {
+        if(!this.error){
             console.warn('Не определен модуль error');
         }
         

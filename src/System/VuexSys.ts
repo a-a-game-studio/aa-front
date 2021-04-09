@@ -17,6 +17,14 @@ export interface RootStateI{
 export class VuexSys{
     private store: RootStateI;
 
+    public ix?:Record<string, any>;
+    public cmd?:Record<string, any>;
+    public one?:Record<string, any>;
+    public list?:Record<string, any[]>;
+    public tree?:Record<string, any>;
+    public status?:Record<string, any>;
+    public error?:Record<string, any>;
+
     /**
      * Создать хранилище
      * @param store 
@@ -34,6 +42,7 @@ export class VuexSys{
     public registerModuleCmd(state:{[key:string]:any}){
 
         this.store.registerModule('cmd', { state:state });
+        this.cmd = this.getCmdStore();
 
         return this.getCmdStore();
     }
@@ -45,6 +54,7 @@ export class VuexSys{
     public registerModuleIx(state:{[key:string]:any}){
 
         this.store.registerModule('ix', { state:state });
+        this.ix = this.getIxStore();
 
         return this.getIxStore();
     }
@@ -56,6 +66,7 @@ export class VuexSys{
     public registerModuleOne(state:{[key:string]:any}){
 
         this.store.registerModule('one', { state:state });
+        this.one = this.getOneStore();
 
         return this.getOneStore();
     }
@@ -67,6 +78,7 @@ export class VuexSys{
     public registerModuleList(state:{[key:string]:any}){
 
         this.store.registerModule('list', { state:state });
+        this.list = this.getListStore();
 
         return this.getListStore();
     }
@@ -78,6 +90,7 @@ export class VuexSys{
     public registerModuleTree(state:{[key:string]:any}){
 
         this.store.registerModule('tree', { state:state });
+        this.tree = this.getTreeStore();
 
         return this.getTreeStore();
     }
@@ -89,6 +102,7 @@ export class VuexSys{
     public registerModuleError(state:{[key:string]:any}){
 
         this.store.registerModule('error', { state:state });
+        this.error = this.getErrorStore();
 
         return this.getErrorStore();
     }
@@ -101,6 +115,7 @@ export class VuexSys{
     public registerModuleStatus(state:{[key:string]:any}){
 
         this.store.registerModule('status', { state:state });
+        this.status = this.getStatusStore();
 
         return this.getStatusStore();
     }

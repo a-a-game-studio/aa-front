@@ -144,8 +144,12 @@ export class QuerySys{
                 this.cbError(reqQuery, resp.errors);
             }
         }).catch((e) => {
-            let errors = {
-                'trace':e
+            console.error(sUrl,' : ',e);
+            let errors = {};
+
+            // Проверяем 500 и другие ошибки, на структурированный ответ
+            if(e && e.response && e.response.data){
+                errors = e.response.data.errors;
             }
             this.cbError(reqQuery, errors);
         });
@@ -182,10 +186,14 @@ export class QuerySys{
 
 
         } catch(e){
+            console.error(sUrl,' : ',e);
+            let errors = {};
 
-            let errors = {
-                'server_no_response':'Сервер недоступен'
+            // Проверяем 500 и другие ошибки, на структурированный ответ
+            if(e && e.response && e.response.data){
+                errors = e.response.data.errors;
             }
+            
             this.cbError(reqQuery, errors);
         }
 

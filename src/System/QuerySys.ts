@@ -145,7 +145,9 @@ export class QuerySys{
             }
         }).catch((e) => {
             console.error(sUrl,' : ',e);
-            let errors = {};
+            let errors = {
+                'request_failed': 'Ошибка запроса на сервер'
+            };
 
             // Проверяем 500 и другие ошибки, на структурированный ответ
             if(e && e.response && e.response.data){
@@ -187,13 +189,15 @@ export class QuerySys{
 
         } catch(e){
             console.error(sUrl,' : ',e);
-            let errors = {};
+            let errors = {
+                'request_failed': 'Ошибка запроса на сервер'
+            };
 
             // Проверяем 500 и другие ошибки, на структурированный ответ
             if(e && e.response && e.response.data){
                 errors = e.response.data.errors;
             }
-            
+
             this.cbError(reqQuery, errors);
         }
 

@@ -121,6 +121,17 @@ export class VuexSys{
     }
 
     /**
+     * Регистрация модуля состояния статуса приложения
+     * @param state 
+     */
+     public registerModuleCustom(kStore:string, state:{[key:string]:any}){
+
+        this.store.registerModule(kStore, { state:state });
+
+        return this.getCustomStore(kStore);
+    }
+
+    /**
      * Получить корневой объект состояния
      */
     public getRootStore(){
@@ -167,6 +178,13 @@ export class VuexSys{
      */
     public getStatusStore(){
         return this.store.state ? this.store.state.status : null;
+    }
+
+    /**
+     * Получить кастомное состояние приложения
+     */
+     public getCustomStore(kStore:string){
+        return this.store.state[kStore];
     }
 
     /**

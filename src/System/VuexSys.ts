@@ -17,6 +17,9 @@ export interface RootStateI{
 export class VuexSys{
     private store: RootStateI;
 
+    /** Инкрементор для кастомных сторов */
+    private incrStore = 0;
+
     public ix?:Record<string, any>;
     public cmd?:Record<string, any>;
     public one?:Record<string, any>;
@@ -124,7 +127,8 @@ export class VuexSys{
      * Регистрация модуля состояния статуса приложения
      * @param state 
      */
-     public registerModuleCustom(kStore:string, state:{[key:string]:any}){
+     public registerModuleCustom(state:{[key:string]:any}){
+        const kStore = 'custom_'+this.incrStore;
 
         this.store.registerModule(kStore, { state:state });
 

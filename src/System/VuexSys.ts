@@ -128,7 +128,7 @@ export class VuexSys{
      * @param state 
      */
      public registerModuleCustom(state:{[key:string]:any}){
-        const kStore = 'custom_'+this.incrStore;
+        const kStore = 'custom_'+this.incrStore++;
 
         this.store.registerModule(kStore, { state:state });
 

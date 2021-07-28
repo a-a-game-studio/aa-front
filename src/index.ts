@@ -1,9 +1,10 @@
 import { BaseCtrl } from './System/BaseCtrl'
-import { QuerySys } from './System/QuerySys'
+import { QuerySys, ResponseI } from './System/QuerySys'
 import { VuexSys } from './System/VuexSys'
 
 export {
     BaseCtrl,
     QuerySys,
+    ResponseI,
     VuexSys,
 }

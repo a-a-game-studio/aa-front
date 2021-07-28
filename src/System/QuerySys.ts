@@ -6,7 +6,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 /**
  * Интерфейс ответа сервера
  */
-interface ResponseI{
+export interface ResponseI{
     ok:boolean;
     e:boolean;
     data:{[key:string]:any}
@@ -41,33 +41,33 @@ export class QuerySys{
      * @param req // Запрос
      * @param aData //
      */
-    public cbSuccess(req:RequestI, aData:any){
+    public cbSuccess(req:RequestI, resp:ResponseI, aData:any){
 
         // Если функция обратного вызова указана
         if(req.cbAction){
-            req.cbAction(true, aData);
+            req.cbAction(true, aData, resp);
         }
 
         // Если функция обратного вызова указана - успешного выполнения
         if(req.cbActionOk){
-            req.cbActionOk(aData);
+            req.cbActionOk(aData, resp);
         }
     }
 
     /**
      * Ответ с ошибкой
      */
-    public cbError(req:RequestI, errors:any){
+    public cbError(req:RequestI, resp:ResponseI, errors:any){
         console.error('==>cbError:',errors);
 
         // Если функция обратного вызова указана
         if(req.cbAction){
-            req.cbAction(false, errors);
+            req.cbAction(false, errors, resp);
         }
 
         // Если функция обратного вызова указана с ошибкой указана
         if(req.cbActionErr){
-            req.cbActionErr(errors);
+            req.cbActionErr(errors, resp);
         }
     }
 
@@ -139,9 +139,9 @@ export class QuerySys{
             let resp:ResponseI = respAxios.data;
 
             if(resp.ok){
-                this.cbSuccess(reqQuery, resp.data);
+                this.cbSuccess(reqQuery, resp, resp.data);
             } else {
-                this.cbError(reqQuery, resp.errors);
+                this.cbError(reqQuery, resp, resp.errors);
             }
         }).catch((e) => {
             console.error(sUrl,' : ',e);
@@ -153,7 +153,7 @@ export class QuerySys{
             if(e && e.response && e.response.data){
                 errors = e.response.data.errors;
             }
-            this.cbError(reqQuery, errors);
+            this.cbError(reqQuery, e.response?.data, errors);
         });
 
         return promiseAxios;
@@ -181,9 +181,9 @@ export class QuerySys{
 
             let resp:ResponseI = respAxios.data;
             if(resp.ok){
-                await this.cbSuccess(reqQuery, resp.data);
+                await this.cbSuccess(reqQuery, resp, resp.data);
             } else {
-                await this.cbError(reqQuery, resp.errors);
+                await this.cbError(reqQuery, resp, resp.errors);
             }
 
 
@@ -198,7 +198,7 @@ export class QuerySys{
                 errors = e.response.data.errors;
             }
 
-            this.cbError(reqQuery, errors);
+            this.cbError(reqQuery, e.response?.data, errors);
         }
 
     };

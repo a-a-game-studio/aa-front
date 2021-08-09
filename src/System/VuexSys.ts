@@ -14,6 +14,11 @@ export interface RootStateI{
     registerModule:Function;
 }
 
+/** Интерфейс по опция vuex для регистрации хранилища */
+export interface VuexOption{
+    preserveState:boolean, // сохранить предыдущее состояние
+}
+
 export class VuexSys{
     private store: RootStateI;
 
@@ -42,9 +47,13 @@ export class VuexSys{
      * Регистрация модуля состояния команд
      * @param state 
      */
-    public registerModuleCmd(state:{[key:string]:any}){
+    public registerModuleCmd(state:{[key:string]:any}, option?:VuexOption){
 
-        this.store.registerModule('cmd', { state:state });
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule('cmd', { state:state }, option);
+        } else {
+            this.store.registerModule('cmd', { state:state });
+        }
         this.cmd = this.getCmdStore();
 
         return this.getCmdStore();
@@ -54,9 +63,13 @@ export class VuexSys{
      * Регистрация модуля индексированные списки
      * @param state 
      */
-    public registerModuleIx(state:{[key:string]:any}){
+    public registerModuleIx(state:{[key:string]:any}, option?:VuexOption){
 
-        this.store.registerModule('ix', { state:state });
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule('ix', { state:state }, option);
+        } else {
+            this.store.registerModule('ix', { state:state });
+        }
         this.ix = this.getIxStore();
 
         return this.getIxStore();
@@ -66,9 +79,13 @@ export class VuexSys{
      * Регистрация модуля состояния модели
      * @param state 
      */
-    public registerModuleOne(state:{[key:string]:any}){
+    public registerModuleOne(state:{[key:string]:any}, option?:VuexOption){
 
-        this.store.registerModule('one', { state:state });
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule('one', { state:state }, option);
+        } else {
+            this.store.registerModule('one', { state:state });
+        }
         this.one = this.getOneStore();
 
         return this.getOneStore();
@@ -78,9 +95,13 @@ export class VuexSys{
      * Регистрация модуля состояния списка модели
      * @param state 
      */
-    public registerModuleList(state:{[key:string]:any}){
+    public registerModuleList(state:{[key:string]:any}, option?:VuexOption){
 
-        this.store.registerModule('list', { state:state });
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule('list', { state:state }, option);
+        } else {
+            this.store.registerModule('list', { state:state });
+        }
         this.list = this.getListStore();
 
         return this.getListStore();
@@ -90,9 +111,13 @@ export class VuexSys{
      * Регистрация модуля состояния деревьев
      * @param state 
      */
-    public registerModuleTree(state:{[key:string]:any}){
+    public registerModuleTree(state:{[key:string]:any}, option?:VuexOption){
 
-        this.store.registerModule('tree', { state:state });
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule('tree', { state:state }, option);
+        } else {
+            this.store.registerModule('tree', { state:state });
+        }
         this.tree = this.getTreeStore();
 
         return this.getTreeStore();
@@ -102,9 +127,13 @@ export class VuexSys{
      * Регистрация модуля состояния списка ошибок
      * @param state 
      */
-    public registerModuleError(state:{[key:string]:any}){
+    public registerModuleError(state:{[key:string]:any}, option?:VuexOption){
 
-        this.store.registerModule('error', { state:state });
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule('error', { state:state }, option);
+        } else {
+            this.store.registerModule('error', { state:state });
+        }
         this.error = this.getErrorStore();
 
         return this.getErrorStore();
@@ -115,9 +144,13 @@ export class VuexSys{
      * Регистрация модуля состояния статуса приложения
      * @param state 
      */
-    public registerModuleStatus(state:{[key:string]:any}){
+    public registerModuleStatus(state:{[key:string]:any}, option?:VuexOption){
 
-        this.store.registerModule('status', { state:state });
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule('status', { state:state }, option);
+        } else {
+            this.store.registerModule('status', { state:state });
+        }
         this.status = this.getStatusStore();
 
         return this.getStatusStore();
@@ -127,10 +160,14 @@ export class VuexSys{
      * Регистрация модуля состояния статуса приложения
      * @param state 
      */
-     public registerModuleCustom(state:{[key:string]:any}){
+     public registerModuleCustom(state:{[key:string]:any}, option?:VuexOption){
         const kStore = 'custom_'+this.incrStore++;
 
-        this.store.registerModule(kStore, { state:state });
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule(kStore, { state:state }, option);
+        } else {
+            this.store.registerModule(kStore, { state:state });
+        }
 
         return this.getCustomStore(kStore);
     }

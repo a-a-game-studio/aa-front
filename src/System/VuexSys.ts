@@ -16,7 +16,7 @@ export interface RootStateI{
 
 /** Интерфейс по опция vuex для регистрации хранилища */
 export interface VuexOption{
-    preserveState:boolean, // сохранить предыдущее состояние
+    preserveState?:boolean; // сохранить предыдущее состояние
 }
 
 export class VuexSys{
@@ -157,10 +157,10 @@ export class VuexSys{
     }
 
     /**
-     * Регистрация модуля состояния статуса приложения
+     * Регистрация специального хранилища по ключу
      * @param state 
      */
-     public registerModuleCustom(state:{[key:string]:any}, option?:VuexOption){
+    public registerModuleCustom(state:{[key:string]:any}, option?:VuexOption){
         const kStore = 'custom_'+this.incrStore++;
 
         if(option){ // Учитывать опции при создании хранилища
@@ -170,6 +170,21 @@ export class VuexSys{
         }
 
         return this.getCustomStore(kStore);
+    }
+
+    /**
+     * Регистрация специального хранилища по ключу
+     * @param state 
+     */
+    public registerModuleCustomKey(state:{[key:string]:any}, key:string, option?:VuexOption){
+
+        if(option){ // Учитывать опции при создании хранилища
+            this.store.registerModule(key, { state:state }, option);
+        } else {
+            this.store.registerModule(key, { state:state });
+        }
+
+        return this.getCustomStore(key);
     }
 
     /**

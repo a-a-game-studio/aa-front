@@ -43,14 +43,14 @@ export class QuerySys{
      */
     public cbSuccess(req:RequestI, resp:ResponseI, aData:any){
 
-        // Если функция обратного вызова указана
-        if(req.cbAction){
-            req.cbAction(true, aData, resp);
-        }
-
         // Если функция обратного вызова указана - успешного выполнения
         if(req.cbActionOk){
             req.cbActionOk(aData, resp);
+        }
+
+        // Если функция обратного вызова указана
+        if(req.cbAction){
+            req.cbAction(true, aData, resp);
         }
     }
 
@@ -60,14 +60,14 @@ export class QuerySys{
     public cbError(req:RequestI, resp:ResponseI, errors:any){
         console.error('==>cbError:',errors);
 
-        // Если функция обратного вызова указана
-        if(req.cbAction){
-            req.cbAction(false, errors, resp);
-        }
-
         // Если функция обратного вызова указана с ошибкой указана
         if(req.cbActionErr){
             req.cbActionErr(errors, resp);
+        }
+
+        // Если функция обратного вызова указана
+        if(req.cbAction){
+            req.cbAction(false, errors, resp);
         }
     }
 

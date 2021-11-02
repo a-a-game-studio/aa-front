@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ES3",
+        "target": "es2015",
         "module": "commonjs",
         "importHelpers": true,
         "noImplicitAny": true,

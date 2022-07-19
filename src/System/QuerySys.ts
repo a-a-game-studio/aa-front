@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { WebSocket } from 'ws';
+import { mIsClient } from '../Helpers/ContextH';
 
 /**
  * Интерфейс ответа сервера
@@ -78,7 +79,9 @@ export class QuerySys {
      * Ответ с ошибкой
      */
 	public cbError(req:RequestI, resp:ResponseI, errors:any) {
-		console.error('==>cbError:', errors);
+		if (mIsClient()) {
+			console.error('==>cbError:', errors);
+		}
 
 		// Если функция обратного вызова указана с ошибкой указана
 		if (req.cbActionErr) {
@@ -154,7 +157,9 @@ export class QuerySys {
 		} else if (this.confWs) {
 			this.faSendWebSocket(sUrl, data);
 		} else {
-			console.error('Конфигурация не указана');
+			if (mIsClient()) {
+				console.error('Конфигурация не указана');
+			}
 		}
 	}
 
@@ -170,7 +175,9 @@ export class QuerySys {
 		} else if (this.confWs) {
 			vResp = await this.faSendWebSocket(sUrl, data);
 		} else {
-			console.error('Конфигурация не указана');
+			if (mIsClient()) {
+				console.error('Конфигурация не указана');
+			}
 		}
 
 		return vResp;
@@ -186,7 +193,7 @@ export class QuerySys {
      * @param data - Данные
      */
 	public fSendAxios(sUrl:string, data:{ [key:string]:any }) {
-		if (!sUrl) {
+		if (!sUrl && mIsClient()) {
 			console.error('==ERROR>', 'URL запроса не определен!');
 			return false;
 		}
@@ -207,7 +214,10 @@ export class QuerySys {
 			}
 		})
 			.catch((e) => {
-				console.error(sUrl, ' : ', e);
+				if (mIsClient()) {
+					console.error(sUrl, ' : ', e);
+				}
+
 				let errors = {
 					request_failed: 'Ошибка запроса на сервер'
 				};
@@ -228,7 +238,7 @@ export class QuerySys {
      * @param data - Данные
      */
 	public async faSendAxios(sUrl:string, data:{ [key:string]:any }) {
-		if (!sUrl) {
+		if (!sUrl && mIsClient()) {
 			console.error('==ERROR>', 'URL запроса не определен!');
 			return false;
 		}
@@ -248,7 +258,10 @@ export class QuerySys {
 				await this.cbError(reqQuery, resp, resp.errors);
 			}
 		} catch (e) {
-			console.error(sUrl, ' : ', e);
+			if (mIsClient()) {
+				console.error(sUrl, ' : ', e);
+			}
+
 			let errors = {
 				request_failed: 'Ошибка запроса на сервер'
 			};
@@ -272,7 +285,7 @@ export class QuerySys {
      * @param vData - Данные
      */
 	public async faSendWebSocket(sUrl:string, vData:{ [key:string]:any }) {
-		if (!sUrl) {
+		if (!sUrl && mIsClient()) {
 			console.error('==ERROR>', 'URL запроса не определен!');
 			return false;
 		}
@@ -289,7 +302,10 @@ export class QuerySys {
 				this.webSocket = await this.fCreateConnectionWS('/');
 				console.log('Соединение успешно установленно');
 			} catch (e) {
-				console.error(sUrl, ' : ', e);
+				if (mIsClient()) {
+					console.error(sUrl, ' : ', e);
+				}
+				
 				let errors = {
 					request_failed: 'Ошибка запроса на сервер'
 				};

@@ -1,6 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-
-import { WebSocket } from 'ws';
 import { mIsClient } from '../Helpers/ContextH';
 
 /**

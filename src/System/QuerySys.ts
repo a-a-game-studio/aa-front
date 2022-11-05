@@ -377,15 +377,17 @@ export class QuerySys {
 
                     this.vWsTick = setInterval(() => {
                         if (this.bWsConnect && this.webSocket) {
-                            const incQueue = this.incQueueCurr++;
-                            const vMsg = this.ixWsQueue[incQueue];
+                            if(this.incQueueMax > this.incQueueCurr){
+                                const incQueue = this.incQueueCurr++;
+                                const vMsg = this.ixWsQueue[incQueue];
 
-                            if (vMsg) {
-                                vMsg.wskey = this.wskey;
-                                this.webSocket.send(JSON.stringify(vMsg));
+                                if (vMsg) {
+                                    vMsg.wskey = this.wskey;
+                                    this.webSocket.send(JSON.stringify(vMsg));
+                                }
+
+                                delete this.ixWsQueue[incQueue];
                             }
-
-                            delete this.ixWsQueue[incQueue];
                         }
                     }, 1);
                     this.bWsConnect = true;

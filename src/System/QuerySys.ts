@@ -364,8 +364,6 @@ export class QuerySys {
             vWebSocket.onmessage = (event: any) => {
                 const resp: ResponseI = JSON.parse(event.data);
 
-                console.log('сообщение пришло', resp);
-
                 if (resp.ok) {
                     this.cbSuccess(reqQuery, resp, resp.data);
                 } else {

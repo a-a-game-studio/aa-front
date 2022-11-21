@@ -152,7 +152,7 @@ export class QuerySys {
         if (this.conf) {
             this.fSendAxios(sUrl, data);
         } else if (this.confWs) {
-            this.faSendWebSocket(sUrl, data);
+            this.fSendWebSocket(sUrl, data);
         } else {
             if (mIsClient()) {
                 console.error('Конфигурация не указана');
@@ -170,7 +170,7 @@ export class QuerySys {
         if (this.conf) {
             vResp = await this.faSendAxios(sUrl, data);
         } else if (this.confWs) {
-            vResp = await this.faSendWebSocket(sUrl, data);
+            vResp = await this.fSendWebSocket(sUrl, data);
         } else {
             if (mIsClient()) {
                 console.error('Конфигурация не указана');
@@ -283,7 +283,7 @@ export class QuerySys {
      * @param sUrl - Адрес
      * @param vData - Данные
      */
-    public async faSendWebSocket(sUrl: string, vData: { [key: string]: any }) {
+    public async fSendWebSocket(sUrl: string, vData: { [key: string]: any }) {
         if (!sUrl && mIsClient()) {
             console.error('==ERROR>', 'URL запроса не определен!');
             return false;
@@ -297,24 +297,7 @@ export class QuerySys {
         };
 
         if (!this.bWsConnect && !this.webSocket && !this.bWsConnectProcess) {
-            try {
-                this.webSocket = await this.fCreateConnectionWS('/');
-                console.log('Соединение успешно установленно');
-            } catch (e) {
-                if (mIsClient()) {
-                    console.error(sUrl, ' : ', e);
-                }
-
-                let errors = {
-                    request_failed: 'Ошибка запроса на сервер',
-                };
-
-                // Проверяем 500 и другие ошибки, на структурированный ответ
-                if (e && e.response && e.response.data) {
-                    errors = e.response.data.errors;
-                }
-                this.cbError(reqQuery, e.response?.data, errors);
-            }
+            this.fCreateConnectionWS('/');
         }
 
         this.ixWsQueue[this.incQueueMax++] = reqParam;
@@ -329,77 +312,98 @@ export class QuerySys {
     /**
      * Создать соединение по сокету
      */
-    private fCreateConnectionWS(sUrl: string): Promise<WebSocket> {
+    private fCreateConnectionWS(sUrl: string): void {
         const reqQuery = this.req;
+
+        if(this.bWsConnectProcess){
+            console.log(console.log('Соединение в процессе установленовки'))
+            return;
+        }
 
         let vWebSocket: WebSocket = null;
         this.bWsConnectProcess = true;
 
-        const vPromise: Promise<WebSocket> = new Promise((resolve, reject) => {
-            this.webSocket = new WebSocket(this.confWs.baseURL + sUrl);
-            vWebSocket = this.webSocket;
+        
+        this.webSocket = new WebSocket(this.confWs.baseURL + sUrl);
+        vWebSocket = this.webSocket;
 
-            vWebSocket.onclose = (event: any) => {
-                if (event.wasClean) {
-                    console.warn(
-                        `[websocket.close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`
-                    );
-                } else {
-                    // например, сервер убил процесс или сеть недоступна
-                    // обычно в этом случае event.code 1006
-                    console.warn('[websocket.close] Соединение прервано');
-                }
+        vWebSocket.onclose = (event: any) => {
+            if (event.wasClean) {
+                console.warn(
+                    `[websocket.close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`
+                );
+            } else {
+                // например, сервер убил процесс или сеть недоступна
+                // обычно в этом случае event.code 1006
+                console.warn('[websocket.close] Соединение прервано');
 
-                this.bWsConnect = false;
-                this.webSocket = null;
+                setTimeout(() => {
+                    this.fCreateConnectionWS(sUrl);
+                }, 5000);
+                console.log('Повторное переподключение(5s)...');
+            }
 
-                clearInterval(this.vWsTick);
-                reject(event);
+            this.bWsConnect = false;
+            this.bWsConnectProcess = false;
+            this.webSocket = null;
+
+            clearInterval(this.vWsTick);
+        };
+
+        vWebSocket.onerror = (e: any) => {
+            console.warn('[websocket.event] Ошибка', e);
+
+            if (mIsClient()) {
+                console.error(sUrl, ' : ', e);
+            }
+
+            let errors = {
+                request_failed: 'Ошибка запроса на сервер',
             };
 
-            vWebSocket.onerror = (event: any) => {
-                console.warn('[websocket.event] Ошибка', event);
-            };
+            // Проверяем 500 и другие ошибки, на структурированный ответ
+            if (e && e.response && e.response.data) {
+                errors = e.response.data.errors;
+            }
+            this.cbError(reqQuery, e.response?.data, errors);
+        };
 
-            vWebSocket.onmessage = (event: any) => {
-                const resp: ResponseI = JSON.parse(event.data);
+        vWebSocket.onmessage = (event: any) => {
+            const resp: ResponseI = JSON.parse(event.data);
 
-                if (resp.ok) {
-                    this.cbSuccess(reqQuery, resp, resp.data);
-                } else {
-                    this.cbError(reqQuery, resp, resp.errors);
-                }
+            if (resp.ok) {
+                this.cbSuccess(reqQuery, resp, resp.data);
+            } else {
+                this.cbError(reqQuery, resp, resp.errors);
+            }
 
-                if (!this.bWsConnect) {
-                    this.wskey = resp.data.msg;
+            if (!this.bWsConnect) {
+                this.wskey = resp.data.msg;
 
-                    this.vWsTick = setInterval(() => {
-                        if (this.bWsConnect && this.webSocket) {
-                            if(this.incQueueMax > this.incQueueCurr){
-                                const incQueue = this.incQueueCurr++;
-                                const vMsg = this.ixWsQueue[incQueue];
+                this.vWsTick = setInterval(() => {
+                    if (this.bWsConnect && this.webSocket) {
+                        if(this.incQueueMax > this.incQueueCurr){
+                            const incQueue = this.incQueueCurr++;
+                            const vMsg = this.ixWsQueue[incQueue];
 
-                                if (vMsg) {
-                                    vMsg.wskey = this.wskey;
-                                    this.webSocket.send(JSON.stringify(vMsg));
-                                }
-
-                                delete this.ixWsQueue[incQueue];
+                            if (vMsg) {
+                                vMsg.wskey = this.wskey;
+                                this.webSocket.send(JSON.stringify(vMsg));
                             }
+
+                            delete this.ixWsQueue[incQueue];
                         }
-                    }, 1);
-                    this.bWsConnect = true;
+                    }
+                }, 1);
+                this.bWsConnect = true;
 
-                    resolve(vWebSocket);
-                }
-            };
+            }
+        };
 
-            vWebSocket.onopen = (e: any) => {
-                console.log('Соединение открыто');
-            };
-        });
+        vWebSocket.onopen = (e: any) => {
+            console.log('Соединение открыто');
+        };
 
-        return vPromise;
     }
 
     /**

@@ -57,6 +57,11 @@ export class QuerySys {
         this.req = {}; // Запрос
     }
 
+    /** Проверка соединения с web сокетом */
+    public ifWsConnect(): boolean {
+        return this.bWsConnect;
+    }
+
     /**
      * Успешное завершение запроса
      * @param req // Запрос

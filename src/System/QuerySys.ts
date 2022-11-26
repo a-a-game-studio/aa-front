@@ -6,8 +6,9 @@ import { WebSocket } from 'ws';
  * Интерфейс ответа сервера
  */
 export interface ResponseI {
-    ok: boolean;
-    e: boolean;
+    ok: boolean; // статус OK
+    e: boolean; // статус ошибки
+    n?: number; // номер запроса
     data: { [key: string]: any };
     errors: { [key: string]: string };
     warning: { [key: string]: string };
@@ -40,7 +41,8 @@ export class QuerySys {
 
     private bWsConnectProcess = false; // Начало установки соединения
 
-    private ixWsQueue: any[] = []; // Очередь WS
+    private ixWsQueue: Record<number,any> = {}; // Очередь WS
+    private ixWsQueueDel: Record<number, boolean> = {}; // Очередь WS на удаление контекста
 
     private incQueueCurr = 0; // Текущая позиция в очереди WS
 
@@ -297,6 +299,7 @@ export class QuerySys {
         // Создаем локальную копию req для возможности множественных асинхронных запросов
         const reqQuery = this.req;
         const reqParam = {
+            req:reqQuery,
             action: sUrl,
             data: vData,
         };
@@ -353,6 +356,14 @@ export class QuerySys {
             this.webSocket = null;
 
             clearInterval(this.vWsTick);
+
+            // Удаление старого контекста
+            const akWsContextDel = Object.keys(this.ixWsQueueDel);
+            this.ixWsQueueDel = {}
+            for (let i = 0; i < akWsContextDel.length; i++) {
+                const kWsContextDel = Number(akWsContextDel[i]);
+                delete this.ixWsQueue[kWsContextDel];
+            }
         };
 
         vWebSocket.onerror = (e: any) => {
@@ -366,37 +377,55 @@ export class QuerySys {
                 request_failed: 'Ошибка запроса на сервер',
             };
 
+            
+
             // Проверяем 500 и другие ошибки, на структурированный ответ
+            let req = {};
             if (e && e.response && e.response.data) {
                 errors = e.response.data.errors;
+                req = this.ixWsQueue[e.response.data.n]
+
+                // Очищаем контекст
+                delete this.ixWsQueue[e.response.data.n];
+                delete this.ixWsQueueDel[e.response.data.n];
             }
-            this.cbError(reqQuery, e.response?.data, errors);
+            this.cbError(req, e.response?.data, errors);
         };
 
         vWebSocket.onmessage = (event: any) => {
             const resp: ResponseI = JSON.parse(event.data);
 
+            const req = this.ixWsQueue[resp.n];
+
             if (resp.ok) {
-                this.cbSuccess(reqQuery, resp, resp.data);
+                this.cbSuccess(req, resp, resp.data);
             } else {
-                this.cbError(reqQuery, resp, resp.errors);
+                this.cbError(req, resp, resp.errors);
             }
+
+            // Плановое удаление контекста
+            delete this.ixWsQueue[resp.n];
+            delete this.ixWsQueueDel[resp.n];
 
             if (!this.bWsConnect) {
                 this.wskey = resp.data.msg;
 
-                this.vWsTick = setInterval(() => {
+                this.vWsTick = setInterval(() => {     
                     if (this.bWsConnect && this.webSocket) {
                         if(this.incQueueMax > this.incQueueCurr){
                             const incQueue = this.incQueueCurr++;
                             const vMsg = this.ixWsQueue[incQueue];
 
                             if (vMsg) {
+                                vMsg.n = incQueue; // номер запроса по нему в ответе берется контекст
                                 vMsg.wskey = this.wskey;
                                 this.webSocket.send(JSON.stringify(vMsg));
-                            }
 
-                            delete this.ixWsQueue[incQueue];
+                                // Помечаем на удаление
+                                this.ixWsQueueDel[incQueue] = true;
+                            } else {
+                                delete this.ixWsQueue[incQueue];
+                            }
                         }
                     }
                 }, 1);

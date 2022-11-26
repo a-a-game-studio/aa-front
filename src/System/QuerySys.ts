@@ -395,12 +395,14 @@ export class QuerySys {
         vWebSocket.onmessage = (event: any) => {
             const resp: ResponseI = JSON.parse(event.data);
 
-            const req = this.ixWsQueue[resp.n];
+            const wsCtx = this.ixWsQueue[resp.n];
 
-            if (resp.ok) {
-                this.cbSuccess(req, resp, resp.data);
-            } else {
-                this.cbError(req, resp, resp.errors);
+            if(wsCtx?.req){
+                if (resp.ok) {
+                    this.cbSuccess(wsCtx?.req, resp, resp.data);
+                } else {
+                    this.cbError(wsCtx?.req, resp, resp.errors);
+                }
             }
 
             // Плановое удаление контекста

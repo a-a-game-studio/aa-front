@@ -328,7 +328,7 @@ export class QuerySys {
         const reqQuery = this.req;
 
         if(this.bWsConnectProcess){
-            console.log(console.log('Соединение в процессе установленовки'))
+            console.log('Соединение в процессе установленовки')
             return;
         }
 

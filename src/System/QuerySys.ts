@@ -371,29 +371,29 @@ export class QuerySys {
         };
 
         vWebSocket.onerror = (e: any) => {
-            if(this.confWs.error == 'short'){
-                console.error('[websocket.event] Ошибка отправки сообщения сокета')
-            } else if(this.confWs.error == 'full'){
-                console.error('[websocket.event] Ошибка', e);
-            }
+
+            // console.error('[websocket.event] Ошибка', sUrl, e);
 
             let errors = {
-                request_failed: 'Ошибка запроса на сервер',
+                request_failed: 'Ошибка запроса на сервер '+sUrl,
             };
-
-            
 
             // Проверяем 500 и другие ошибки, на структурированный ответ
             let req = {};
-            if (e && e.response && e.response.data) {
-                errors = e.response.data.errors;
-                req = this.ixWsQueue[e.response.data.n]
+            if (e && e.data) {
+                
+                const resp = JSON.parse(e.data);
+                errors = resp.errors;
 
-                // Очищаем контекст
-                delete this.ixWsQueue[e.response.data.n];
-                delete this.ixWsQueueDel[e.response.data.n];
+                req = this.ixWsQueue[resp.n];
+
+                if(resp){
+                    // Очищаем контекст
+                    delete this.ixWsQueue[resp.n];
+                    delete this.ixWsQueueDel[resp.n];
+                }
             }
-            this.cbError(req, e.response?.data, errors);
+            this.cbError(req, e?.data, errors);
         };
 
         vWebSocket.onmessage = (event: any) => {

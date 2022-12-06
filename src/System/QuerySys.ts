@@ -27,6 +27,7 @@ interface RequestI {
 // Конфиг для веб сокетов
 interface ConfigWsI {
     baseURL: string;
+    error?: 'hide'|'short'|'full'
 }
 
 /** Система запросов к серверу */
@@ -35,7 +36,7 @@ export class QuerySys {
 
     private conf: AxiosRequestConfig; // Конфиг http
 
-    private confWs: AxiosRequestConfig; // Конфиг WS
+    private confWs: ConfigWsI; // Конфиг WS
 
     private bWsConnect = false; // Соединение  WS установленно
 
@@ -133,8 +134,11 @@ export class QuerySys {
     /**
      * Инициализация конфигурации WebSocket
      */
-    public fConfigWs(conf: { baseURL: string }) {
+    public fConfigWs(conf: ConfigWsI) {
         this.confWs = conf;
+        if(!conf.error){ // По умолчанию минимально количество ошибок
+            this.confWs.error = 'short';
+        }
     }
 
     /**
@@ -367,10 +371,10 @@ export class QuerySys {
         };
 
         vWebSocket.onerror = (e: any) => {
-            console.warn('[websocket.event] Ошибка', e);
-
-            if (mIsClient()) {
-                console.error(sUrl, ' : ', e);
+            if(this.confWs.error == 'short'){
+                console.warn('[websocket.event] Ошибка', JSON.stringify(e)?.slice(0,100))
+            } else if(this.confWs.error == 'full'){
+                console.error('[websocket.event] Ошибка', e);
             }
 
             let errors = {

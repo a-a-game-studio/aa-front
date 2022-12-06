@@ -55,6 +55,8 @@ export class QuerySys {
 
     private wskey: string = null; // Ключ для операции по сокету
 
+    private wsTickConnect:any = null;
+
     /** init */
     constructor() {
         this.req = {}; // Запрос
@@ -331,15 +333,24 @@ export class QuerySys {
             console.log('Соединение в процессе установленовки')
             return;
         }
-
-        let vWebSocket: WebSocket = null;
         this.bWsConnectProcess = true;
 
-        
-        this.webSocket = new WebSocket(this.confWs.baseURL + sUrl);
-        vWebSocket = this.webSocket;
+        if(this.webSocket){
+            this.webSocket.close();
+            delete this.webSocket;
+        }
 
-        vWebSocket.onclose = (event: any) => {
+        // Интервал переподключения активируется только в случае отвала соединения
+        clearInterval(this.wsTickConnect);
+        this.wsTickConnect = setInterval(() => {     
+            if(!this.bWsConnectProcess){
+                this.fCreateConnectionWS(sUrl);
+            }
+        }, 5000);
+
+        this.webSocket = new WebSocket(this.confWs.baseURL + sUrl);
+
+        this.webSocket.onclose = (event: any) => {
             if (event.wasClean) {
                 console.warn(
                     `[websocket.close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`
@@ -348,10 +359,6 @@ export class QuerySys {
                 // например, сервер убил процесс или сеть недоступна
                 // обычно в этом случае event.code 1006
                 console.warn('[websocket.close] Соединение прервано');
-
-                setTimeout(() => {
-                    this.fCreateConnectionWS(sUrl);
-                }, 5000);
                 console.log('Повторное переподключение(5s)...');
             }
 
@@ -370,7 +377,7 @@ export class QuerySys {
             }
         };
 
-        vWebSocket.onerror = (e: any) => {
+        this.webSocket.onerror = (e: any) => {
 
             // console.error('[websocket.event] Ошибка', sUrl, e);
 
@@ -396,7 +403,7 @@ export class QuerySys {
             this.cbError(req, e?.data, errors);
         };
 
-        vWebSocket.onmessage = (event: any) => {
+        this.webSocket.onmessage = (event: any) => {
             const resp: ResponseI = JSON.parse(event.data);
 
             const wsCtx = this.ixWsQueue[resp.n];
@@ -440,7 +447,7 @@ export class QuerySys {
             }
         };
 
-        vWebSocket.onopen = (e: any) => {
+        this.webSocket.onopen = (e: any) => {
             console.log('Соединение открыто');
         };
 

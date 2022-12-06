@@ -372,7 +372,7 @@ export class QuerySys {
 
         vWebSocket.onerror = (e: any) => {
             if(this.confWs.error == 'short'){
-                console.warn('[websocket.event] Ошибка', JSON.stringify(e)?.slice(0,100))
+                console.error('[websocket.event] Ошибка отправки сообщения сокета')
             } else if(this.confWs.error == 'full'){
                 console.error('[websocket.event] Ошибка', e);
             }

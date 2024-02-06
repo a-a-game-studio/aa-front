@@ -27,6 +27,7 @@ interface RequestI {
 // Конфиг для веб сокетов
 interface ConfigWsI {
     baseURL: string;
+    nameApp?: string;
     error?: 'hide'|'short'|'full'
 }
 
@@ -353,13 +354,14 @@ export class QuerySys {
         this.webSocket.onclose = (event: any) => {
             if (event.wasClean) {
                 console.warn(
-                    `[websocket.close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`
+                    `[websocket.close] Соединение закрыто чисто, код=${event.code} причина=${event.reason} `
+                    ,this.confWs.baseURL, ' - ',this.confWs.nameApp
                 );
             } else {
                 // например, сервер убил процесс или сеть недоступна
                 // обычно в этом случае event.code 1006
-                console.warn('[websocket.close] Соединение прервано');
-                console.log('Повторное переподключение(5s)...');
+                console.warn('[websocket.close] Соединение прервано - ',this.confWs.baseURL, ' - ',this.confWs.nameApp);
+                console.log('Повторное переподключение(5s)...' , this.confWs.baseURL, ' - ',this.confWs.nameApp);
             }
 
             this.bWsConnect = false;
@@ -448,7 +450,7 @@ export class QuerySys {
         };
 
         this.webSocket.onopen = (e: any) => {
-            console.log('Соединение открыто');
+            console.log('Соединение открыто ',this.confWs.baseURL, ' - ',this.confWs.nameApp);
         };
 
     }
